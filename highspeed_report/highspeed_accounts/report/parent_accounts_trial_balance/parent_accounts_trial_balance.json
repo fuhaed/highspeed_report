@@ -1,0 +1,33 @@
+{
+ "add_total_row": 1,
+ "columns": [],
+ "creation": "2025-03-23 12:00:00",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2025-05-01 21:30:40.692654",
+ "modified_by": "Administrator",
+ "module": "Highspeed Accounts",
+ "name": "Parent Accounts Trial Balance",
+ "owner": "Administrator",
+ "prepared_report": 1,
+ "ref_doctype": "GL Entry",
+ "report_name": "Parent Accounts Trial Balance",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Accounts Manager"
+  },
+  {
+   "role": "Auditor"
+  }
+ ],
+ "timeout": 0
+}

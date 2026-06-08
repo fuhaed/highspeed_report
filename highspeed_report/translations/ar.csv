@@ -1,0 +1,170 @@
+Account,الحساب
+Account Name,اسم الحساب
+Account No,رقم الحساب
+Adjustments,التعديلات
+Amount,المبلغ
+An error occurred: {},حدث خطأ: {}
+Available Qty,الكمية المتاحة
+Balance,الرصيد
+Barcode,الباركود
+Branch,الفرع
+Buying Price,سعر الشراء
+Cash Account Statement,كشف حساب الصندوق/النقدية
+Cash Account Statement Report,تقرير كشف حساب الصندوق/النقدية
+Closing Balance,الرصيد الختامي
+Closing Qty,الرصيد الختامي كمية
+Closing Value,الرصيد الختامي قيمة
+Company,الشركة
+Cost Center,مركز التكلفة
+Credit,الدائن
+Current Balance,الرصيد الحالي
+Current Price,السعر الحالي
+Customer,العميل
+Customer Statement,كشف حساب العميل
+Customer Statement Report,تقرير كشف حساب العميل
+Daily Inventory Movement,حركة المخزون اليومية
+Date,تاريخ
+Days Since Last Purchase,أيام منذ آخر شراء
+Days Since Last Sale,أيام منذ آخر بيع
+Debit,المدين
+Delivery Note,سند تسليم
+Description,الوصف
+Detailed Sales,المبيعات التفصيلية
+Detailed Sales Log,تقرير سجل المبيعات التفصيلي
+Discount,الخصم
+Due Date,تاريخ الاستحقاق
+Execute Main Report,تنفيذ التقرير الرئيسي
+Expenses (Journal Entries),المصروفات (القيود اليومية)
+Expenses (Payment Entries),المصروفات (سندات الصرف)
+Export to Excel,تصدير إلى Excel
+Export to PDF,تصدير إلى PDF
+Exported,الصادر
+Filters,تصفية
+Financial and Tax Reports,التقارير المالية والضريبية
+From Date,تاريخ البداية
+Get Data,جلب البيانات
+Get Report Columns,تحديد أعمدة التقرير
+Grand Total,الإجمالي
+Highspeed Custom Reports,تقارير Highspeed المخصصة
+Highspeed Reports,تقارير Highspeed
+Highspeed Reports Dashboard,لوحة تقارير Highspeed
+Incoming Qty,الكمية الواردة
+Invoice / Voucher Date,تاريخ الفاتورة / السند
+Invoice Date,تاريخ الفاتورة
+Invoice No,رقم الفاتورة
+Item Code,كود الصنف
+Item Group,مجموعة الصنف
+Item Movement Report,حركة الصنف بالتفصيل
+Item Name,اسم الصنف
+Item Price Comparison Report,مقارنة أسعار الأصناف
+Item Stock Balance,خلاصة رصيد المخزون
+Item Warehouse Quantity Report,تقرير كميات الأصناف في المستودع
+Journal Entries Report,تقرير قيود اليومية
+Journal Entry,قيد يومية
+Last Purchase Date,آخر حركة شراء
+Last Sale Date,آخر حركة بيع
+Last Stock Date,آخر حركة مخزون
+Margin,الهامش
+Margin %,نسبة الهامش
+Net,الصافي
+Net Purchases (After Returns),صافي المشتريات (بعد خصم المرتجعات)
+Net Sales,صافي المبيعات
+Net Sales (After Returns),صافي المبيعات (بعد خصم المرتجعات)
+Net Total,الصافي قبل الضريبة
+No,الرقم
+Non-Taxable Purchase Returns,مرتجعات المشتريات غير الخاضعة للضريبة
+Non-Taxable Sales Returns,مرتجعات المبيعات غير الخاضعة للضريبة
+Non-Taxable or Zero-Rated Purchases,المشتريات غير الخاضعة أو الضريبة الصفرية
+Non-Taxable or Zero-Rated Sales,المبيعات غير الخاضعة أو الضريبة الصفرية
+Opening,الافتتاحي
+Opening Balance,الرصيد الافتتاحي
+Opening Qty,الرصيد الافتتاحي كمية
+Opening Value,الرصيد الافتتاحي قيمة
+Outgoing Qty,الكمية الصادرة
+Outstanding Amount,المتبقي
+POS Opening & Closing Report,تقرير فتح وإغلاق الصناديق
+POS Opening Closing Report,تقرير فتح وإغلاق الصناديق
+POS Sales Report,تقرير مبيعات نقاط البيع
+POSAwesome Opening & Closing Report,تقرير مبيعات ونقاط البيع المحسن
+POSAwesome Opening Closing Report,تقرير مبيعات ونقاط البيع المحسن
+Pages,الصفحات
+Paid Amount,المدفوع
+Parent Accounts Trial Balance,ميزان المراجعة للحسابات الرئيسية
+Particulars,البيان
+Particulars for Report,البيان للتقرير
+Payment Amount,مبلغ الدفع
+Payment Entry,سند صرف
+Payment Mode,طريقة الدفع
+Payment Mode / Account,طريقة الدفع/الحساب
+Payment Modes,طرق الدفع
+Payment Register Report,تقرير سجل المدفوعات
+Payments,المدفوعات
+Percentage,النسبة
+Print Report,طباعة التقرير
+Profit Margin,هامش الربح
+Profit Rate,معدل الربح
+Purchase Invoice,فاتورة مشتريات
+Purchase Order,أمر شراء
+Purchase Receipt,سند استلام
+Purchase Register,سجل المشتريات
+Purchase Register Report,تقرير سجل المشتريات
+Quotation,عرض سعر
+Rebuild Report,إعادة بناء التقرير
+Reference,المرجع
+Retrieved {} slow-moving items,تم استرجاع {} صنف راكد
+Returns,المرتجعات
+Returns Amount,قيمة المرتجعات
+Rows,الصفوف
+Sales,المبيعات
+Sales Amount,قيمة المبيعات
+Sales Invoice,فاتورة مبيعات
+Sales Invoice Payment Breakdown,تفصيل دفعات فاتورة المبيعات
+Sales Order,أمر بيع
+Sales Register,سجل المبيعات
+Sales Register Report,تقرير سجل المبيعات
+Sales and POS Reports,تقارير المبيعات ونقاط البيع
+Selling Price,سعر البيع
+Simple Items Barcode,ملف باركود الأصناف المبسط
+Simple Sales Log,تقرير سجل المبيعات المبسط
+Slow Moving Items,أصناف بطيئة الحركة
+Stagnant Days,أيام الركود
+Standard Rate Taxable Purchase Returns,مرتجعات المشتريات الخاضعة للنسبة الأساسية
+Standard Rate Taxable Purchases,المشتريات الخاضعة للنسبة الأساسية
+Standard Rate Taxable Sales,المبيعات الخاضعة للنسبة الأساسية
+Standard Rate Taxable Sales Returns,مرتجعات المبيعات الخاضعة للنسبة الأساسية
+Statements and Payments,كشوفات الحسابات والمدفوعات
+Status,الحالة
+Stock Value,قيمة المخزون
+Stock and Inventory Reports,تقارير المخازن وحركة الأصناف
+Supplier,المورد
+Supplier Statement,كشف حساب المورد
+Supplier Statement Report,تقرير كشف حساب المورد
+Tax,الضريبة
+Tax Declaration Report,الإقرار الضريبي
+To Date,تاريخ النهاية
+Total,المجموع
+Total Purchase Returns,اجمالي مرتجعات المشتريات
+Total Purchases,اجمالي المشتريات
+Total Recoverable Tax (Purchases and Expenses),اجمالي الضريبة المستردة (المشتريات والمصروفات)
+Total Sales,اجمالي المبيعات
+Total Sales Returns,اجمالي مرتجعات المبيعات
+Total VAT Due for Current Tax Period,اجمالي ضريبة القيمة المضافة المستحقة عن الفترة الضريبية الحالية
+UOM,وحدة القياس
+Update Report,تحديث التقرير
+User,اسم المستخدم
+VAT Amount,قيمة ضريبة القيمة المضافة
+VAT Declaration,إقرار ضريبة القيمة المضافة
+VAT Due,الضريبة المستحقة
+Variant Attributes,خصائص المتغيرات
+Voucher Date,تاريخ القيد
+Voucher No,رقم القيد
+Warehouse,مستودع
+Warehouses,مستودعات
+of,من
+Total Unique Items,إجمالي الأصناف الفريدة
+Total Barcodes,إجمالي الباركودات
+Items with Price,أصناف بأسعار
+Items without Price,أصناف بدون أسعار
+Print Label,طباعة ملصق
+Print Barcode Only,شريط باركود
+

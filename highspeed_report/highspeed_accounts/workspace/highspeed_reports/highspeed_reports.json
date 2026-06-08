@@ -1,0 +1,355 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"hs_header_reports\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h3\\\"><b>Highspeed Custom Reports</b></span>\",\"col\":12}},{\"id\":\"hs_card_finance\",\"type\":\"card\",\"data\":{\"card_name\":\"Financial and Tax Reports\",\"col\":6}},{\"id\":\"hs_card_sales\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales and POS Reports\",\"col\":6}},{\"id\":\"hs_card_statements\",\"type\":\"card\",\"data\":{\"card_name\":\"Statements and Payments\",\"col\":6}},{\"id\":\"hs_card_stock\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock and Inventory Reports\",\"col\":6}}]",
+ "creation": "2026-06-08 18:40:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "pie-chart",
+ "idx": 0,
+ "indicator_color": "blue",
+ "is_hidden": 0,
+ "label": "Highspeed Reports",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Financial and Tax Reports",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Tax Declaration Report",
+   "link_count": 0,
+   "link_to": "Tax Declaration Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "GL Entry",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Parent Accounts Trial Balance",
+   "link_count": 0,
+   "link_to": "Parent Accounts Trial Balance",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "GL Entry",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Cash Account Statement Report",
+   "link_count": 0,
+   "link_to": "Cash Account Statement Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "GL Entry",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Journal Entries Report",
+   "link_count": 0,
+   "link_to": "Journal Entries Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Journal Entry",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales and POS Reports",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Detailed Sales",
+   "link_count": 0,
+   "link_to": "Detailed Sales",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Detailed Sales Log",
+   "link_count": 0,
+   "link_to": "Detailed Sales Log",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Simple Sales Log",
+   "link_count": 0,
+   "link_to": "Simple Sales Log",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Register Report",
+   "link_count": 0,
+   "link_to": "Sales Register Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Invoice Payment Breakdown",
+   "link_count": 0,
+   "link_to": "Sales Invoice Payment Breakdown",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "POS Sales Report",
+   "link_count": 0,
+   "link_to": "POS Sales Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "POS Opening Closing Report",
+   "link_count": 0,
+   "link_to": "POS Opening Closing Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "POS Opening Shift",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "POSAwesome Opening Closing Report",
+   "link_count": 0,
+   "link_to": "POSAwesome Opening Closing Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "POS Opening Shift",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Statements and Payments",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Customer Statement Report",
+   "link_count": 0,
+   "link_to": "Customer Statement Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Customer",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Supplier Statement Report",
+   "link_count": 0,
+   "link_to": "Supplier Statement Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Supplier",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Payment Register Report",
+   "link_count": 0,
+   "link_to": "Payment Register Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Payment Entry",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Purchase Register Report",
+   "link_count": 0,
+   "link_to": "Purchase Register Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Purchase Invoice",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock and Inventory Reports",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Item Warehouse Quantity Report",
+   "link_count": 0,
+   "link_to": "Item Warehouse Quantity Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Item",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Item Stock Balance",
+   "link_count": 0,
+   "link_to": "Item Stock Balance",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Item",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Daily Inventory Movement",
+   "link_count": 0,
+   "link_to": "Daily Inventory Movement",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Stock Ledger Entry",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Item Movement Report",
+   "link_count": 0,
+   "link_to": "Item Movement Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Stock Ledger Entry",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Item Price Comparison Report",
+   "link_count": 0,
+   "link_to": "Item Price Comparison Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Item",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Slow Moving Items",
+   "link_count": 0,
+   "link_to": "Slow Moving Items",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Item",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Simple Items Barcode",
+   "link_count": 0,
+   "link_to": "Simple Items Barcode",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Item",
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-06-08 18:40:00.000000",
+ "modified_by": "Administrator",
+ "module": "Highspeed Accounts",
+ "name": "Highspeed Reports",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Accounts Manager"
+  },
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Stock Manager"
+  },
+  {
+   "role": "Stock User"
+  }
+ ],
+ "sequence_id": 1.0,
+ "shortcuts": [],
+ "title": "Highspeed Reports"
+}

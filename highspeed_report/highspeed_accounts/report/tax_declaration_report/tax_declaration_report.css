@@ -1,0 +1,259 @@
+/* Premium CSS styles for Tax Declaration Report Dashboard */
+
+/* Hide standard report summary for our custom page */
+.tax-declaration-report-page .report-summary {
+    display: none !important;
+}
+
+/* Dashboard Wrapper */
+.tax-dashboard-wrapper {
+    margin: 20px 15px;
+    direction: rtl; /* Force RTL display for Arabic accounting presentation */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* General layout grid for the main category cards */
+.tax-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+/* Section Card Styles */
+.tax-dashboard-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    padding: 24px;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.tax-dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Card Accent Light Background Glows on Hover */
+.tax-dashboard-card.tax-sales-theme:hover {
+    border-color: #10b981;
+    box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.1), 0 10px 10px -5px rgba(16, 185, 129, 0.04);
+}
+
+.tax-dashboard-card.tax-purchases-theme:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 10px 10px -5px rgba(59, 130, 246, 0.04);
+}
+
+.tax-dashboard-card.tax-expenses-theme:hover {
+    border-color: #8b5cf6;
+    box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.1), 0 10px 10px -5px rgba(139, 92, 246, 0.04);
+}
+
+/* Section Titles with Top Accent */
+.tax-card-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tax-card-title-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tax-sales-theme {
+    border-bottom-color: #10b981;
+    color: #065f46;
+}
+
+.tax-purchases-theme {
+    border-bottom-color: #3b82f6;
+    color: #1e3a8a;
+}
+
+.tax-expenses-theme {
+    border-bottom-color: #8b5cf6;
+    color: #4c1d95;
+}
+
+/* SVG Icon styles */
+.tax-icon {
+    stroke-width: 2.2px;
+    vertical-align: middle;
+}
+
+/* Section Category Badges */
+.tax-card-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.tax-sales-theme .tax-card-badge {
+    background-color: #e6fffa;
+    color: #0d9488;
+    border: 1px solid #b2f5ea;
+}
+
+.tax-purchases-theme .tax-card-badge {
+    background-color: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+}
+
+.tax-expenses-theme .tax-card-badge {
+    background-color: #faf5ff;
+    color: #6b46c1;
+    border: 1px solid #e9d8fd;
+}
+
+/* Grid layout for data metric widgets inside section cards */
+.tax-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+/* Individual Metric Card Style */
+.tax-metric-item {
+    background-color: #f8fafc;
+    border: 1px solid #edf2f7;
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border-inline-start: 4px solid #cbd5e1; /* Visual logical border indicator */
+}
+
+.tax-metric-item:hover {
+    background-color: #ffffff;
+    border-color: #cbd5e1;
+    transform: scale(1.02);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.tax-metric-label {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 600;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tax-metric-value {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1e293b;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    letter-spacing: -0.5px;
+}
+
+/* Specific Indicator Colors (applying border-inline-start-color for RTL support) */
+.tax-bar-green { border-inline-start-color: #10b981; }
+.tax-bar-blue { border-inline-start-color: #3b82f6; }
+.tax-bar-red { border-inline-start-color: #ef4444; }
+.tax-bar-purple { border-inline-start-color: #8b5cf6; }
+.tax-bar-amber { border-inline-start-color: #f59e0b; }
+
+.tax-val-green { color: #10b981; }
+.tax-val-blue { color: #3b82f6; }
+.tax-val-red { color: #ef4444; }
+.tax-val-purple { color: #8b5cf6; }
+
+/* Special layout behaviors */
+.tax-span-full {
+    grid-column: span 2;
+}
+
+/* Net VAT Due Card Styling */
+.tax-due-card {
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.tax-due-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.tax-due-payable {
+    background: linear-gradient(135deg, #fff5f5 0%, #fee2e2 100%);
+    border-color: #fca5a5;
+    border-inline-start: 6px solid #ef4444;
+}
+
+.tax-due-payable .tax-due-title {
+    color: #991b1b;
+}
+
+.tax-due-payable .tax-due-val {
+    color: #b91c1c;
+}
+
+.tax-due-refundable {
+    background: linear-gradient(135deg, #f0fff4 0%, #d1fae5 100%);
+    border-color: #86efac;
+    border-inline-start: 6px solid #10b981;
+}
+
+.tax-due-refundable .tax-due-title {
+    color: #065f46;
+}
+
+.tax-due-refundable .tax-due-val {
+    color: #047857;
+}
+
+.tax-due-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tax-due-val {
+    font-size: 26px;
+    font-weight: 800;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* Make sure the datatable and other standard elements look clean too */
+.tax-declaration-table .dt-cell {
+    padding: 12px 15px !important;
+}
+
+.tax-declaration-table .dt-header .dt-cell {
+    background-color: #f8fafc !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+
+/* LTR layout override */
+.ltr-layout .tax-dashboard-wrapper {
+    direction: ltr;
+}

@@ -1,0 +1,37 @@
+{
+ "add_total_row": 0,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2026-06-08 18:47:22.785996",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": null,
+ "modified": "2026-06-08 19:04:38.242279",
+ "modified_by": "Administrator",
+ "module": "Highspeed Stock",
+ "name": "Item Stock Balance",
+ "owner": "Administrator",
+ "prepared_report": 1,
+ "ref_doctype": "Stock Ledger Entry",
+ "report_name": "Item Stock Balance",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Stock User"
+  },
+  {
+   "role": "Stock Manager"
+  },
+  {
+   "role": "Accounts Manager"
+  },
+  {
+   "role": "Accounts User"
+  }
+ ],
+ "timeout": 0
+}
