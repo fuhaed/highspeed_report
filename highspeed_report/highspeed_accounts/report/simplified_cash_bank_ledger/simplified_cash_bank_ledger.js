@@ -57,20 +57,29 @@ frappe.query_reports["Simplified Cash Bank Ledger"] = {
         }
 
         if (column.fieldname === "debit" && parseFloat(value) > 0) {
-            return `<span style="color: #27ae60; font-weight: bold;">+${default_formatter(value, row, column, data)}</span>`;
+            let formatted = default_formatter(value, row, column, data);
+            if (formatted && formatted.includes("<div")) {
+                formatted = $(formatted).text().trim();
+            }
+            return `<div style="text-align: right; color: #27ae60; font-weight: bold;">+${formatted}</div>`;
         }
 
         if (column.fieldname === "credit" && parseFloat(value) > 0) {
-            return `<span style="color: #e74c3c; font-weight: bold;">-${default_formatter(value, row, column, data)}</span>`;
+            let formatted = default_formatter(value, row, column, data);
+            if (formatted && formatted.includes("<div")) {
+                formatted = $(formatted).text().trim();
+            }
+            return `<div style="text-align: right; color: #e74c3c; font-weight: bold;">-${formatted}</div>`;
         }
 
         if (column.fieldname === "balance") {
             const bal = parseFloat(value) || 0;
-            let val = default_formatter(value, row, column, data);
-            if (bal < 0) {
-                return `<span style="color: #e74c3c; font-weight: bold;">${val}</span>`;
+            let formatted = default_formatter(value, row, column, data);
+            if (formatted && formatted.includes("<div")) {
+                formatted = $(formatted).text().trim();
             }
-            return `<span style="color: #2c3e50; font-weight: bold;">${val}</span>`;
+            const color = bal < 0 ? "#e74c3c" : "#2c3e50";
+            return `<div style="text-align: right; color: ${color}; font-weight: bold;">${formatted}</div>`;
         }
 
         if (data.is_total_row) {
