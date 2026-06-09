@@ -251,55 +251,55 @@ def get_data(filters):
     net_profit = net_sales - cogs - other_expenses
 
     # Add Cash & Bank
-    data.append({"category": _("Cash & Bank"), "metric": _("Cash in Hand"), "value": total_cash, "remarks": _("Total cash balance across all registers")})
-    data.append({"category": _("Cash & Bank"), "metric": _("Bank Balances"), "value": total_bank, "remarks": _("Total balance in bank accounts")})
-    data.append({"category": _("Cash & Bank"), "metric": _("Total Liquidity"), "value": total_cash + total_bank, "remarks": _("Cash + Bank Balances")})
-    data.append({"category": _("Cash & Bank"), "metric": _("Net Inflow (Debit)"), "value": inflow_outflow["inflow"], "remarks": _("Total debit transactions this period")})
-    data.append({"category": _("Cash & Bank"), "metric": _("Net Outflow (Credit)"), "value": inflow_outflow["outflow"], "remarks": _("Total credit transactions this period")})
+    data.append({"category": "Cash & Bank", "metric": "Cash in Hand", "value": total_cash, "remarks": "Total cash balance across all registers"})
+    data.append({"category": "Cash & Bank", "metric": "Bank Balances", "value": total_bank, "remarks": "Total balance in bank accounts"})
+    data.append({"category": "Cash & Bank", "metric": "Total Liquidity", "value": total_cash + total_bank, "remarks": "Cash + Bank Balances"})
+    data.append({"category": "Cash & Bank", "metric": "Net Inflow (Debit)", "value": inflow_outflow["inflow"], "remarks": "Total debit transactions this period"})
+    data.append({"category": "Cash & Bank", "metric": "Net Outflow (Credit)", "value": inflow_outflow["outflow"], "remarks": "Total credit transactions this period"})
     
     # Add accounts for detailed js consumption
     for acc in account_balances:
         data.append({
-            "category": _("Cash & Bank Accounts Detail"),
+            "category": "Cash & Bank Accounts Detail",
             "metric": acc["account_name"],
             "value": acc["balance"],
             "remarks": acc["type"]
         })
 
     # Add Receivables (AR)
-    data.append({"category": _("Accounts Receivable (AR)"), "metric": _("Total Receivables"), "value": ar_total, "remarks": _("Total outstanding customer invoice balances")})
-    data.append({"category": _("Accounts Receivable (AR)"), "metric": _("Overdue Receivables"), "value": ar_overdue, "remarks": _("Receivables past their invoice due dates")})
-    data.append({"category": _("Accounts Receivable (AR)"), "metric": _("Receivables (0-30 Days)"), "value": ar_aging_30, "remarks": _("Outstanding within 30 days")})
-    data.append({"category": _("Accounts Receivable (AR)"), "metric": _("Receivables (30-60 Days)"), "value": ar_aging_60, "remarks": _("Outstanding within 30 to 60 days")})
-    data.append({"category": _("Accounts Receivable (AR)"), "metric": _("Receivables (60+ Days)"), "value": ar_aging_90, "remarks": _("Outstanding overdue for more than 60 days")})
+    data.append({"category": "Accounts Receivable (AR)", "metric": "Total Receivables", "value": ar_total, "remarks": "Total outstanding customer invoice balances"})
+    data.append({"category": "Accounts Receivable (AR)", "metric": "Overdue Receivables", "value": ar_overdue, "remarks": "Receivables past their invoice due dates"})
+    data.append({"category": "Accounts Receivable (AR)", "metric": "Receivables (0-30 Days)", "value": ar_aging_30, "remarks": "Outstanding within 30 days"})
+    data.append({"category": "Accounts Receivable (AR)", "metric": "Receivables (30-60 Days)", "value": ar_aging_60, "remarks": "Outstanding within 30 to 60 days"})
+    data.append({"category": "Accounts Receivable (AR)", "metric": "Receivables (60+ Days)", "value": ar_aging_90, "remarks": "Outstanding overdue for more than 60 days"})
 
     # Add Payables (AP)
-    data.append({"category": _("Accounts Payable (AP)"), "metric": _("Total Payables"), "value": ap_total, "remarks": _("Total outstanding supplier invoice balances")})
-    data.append({"category": _("Accounts Payable (AP)"), "metric": _("Overdue Payables"), "value": ap_overdue, "remarks": _("Payables past their invoice due dates")})
-    data.append({"category": _("Accounts Payable (AP)"), "metric": _("Payables (0-30 Days)"), "value": ap_aging_30, "remarks": _("Supplier outstanding within 30 days")})
-    data.append({"category": _("Accounts Payable (AP)"), "metric": _("Payables (30-60 Days)"), "value": ap_aging_60, "remarks": _("Supplier outstanding within 30 to 60 days")})
-    data.append({"category": _("Accounts Payable (AP)"), "metric": _("Payables (60+ Days)"), "value": ap_aging_90, "remarks": _("Supplier outstanding overdue for more than 60 days")})
+    data.append({"category": "Accounts Payable (AP)", "metric": "Total Payables", "value": ap_total, "remarks": "Total outstanding supplier invoice balances"})
+    data.append({"category": "Accounts Payable (AP)", "metric": "Overdue Payables", "value": ap_overdue, "remarks": "Payables past their invoice due dates"})
+    data.append({"category": "Accounts Payable (AP)", "metric": "Payables (0-30 Days)", "value": ap_aging_30, "remarks": "Supplier outstanding within 30 days"})
+    data.append({"category": "Accounts Payable (AP)", "metric": "Payables (30-60 Days)", "value": ap_aging_60, "remarks": "Supplier outstanding within 30 to 60 days"})
+    data.append({"category": "Accounts Payable (AP)", "metric": "Payables (60+ Days)", "value": ap_aging_90, "remarks": "Supplier outstanding overdue for more than 60 days"})
 
     # Add Tax / VAT
-    data.append({"category": _("Tax & VAT"), "metric": _("VAT Collected (Sales)"), "value": vat_collected, "remarks": _("VAT Output collected on Sales")})
-    data.append({"category": _("Tax & VAT"), "metric": _("VAT Paid (Purchases)"), "value": vat_paid, "remarks": _("VAT Input paid on Purchases")})
-    data.append({"category": _("Tax & VAT"), "metric": _("Net VAT Liability"), "value": net_vat_liability, "remarks": _("VAT Output - VAT Input")})
+    data.append({"category": "Tax & VAT", "metric": "VAT Collected (Sales)", "value": vat_collected, "remarks": "VAT Output collected on Sales"})
+    data.append({"category": "Tax & VAT", "metric": "VAT Paid (Purchases)", "value": vat_paid, "remarks": "VAT Input paid on Purchases"})
+    data.append({"category": "Tax & VAT", "metric": "Net VAT Liability", "value": net_vat_liability, "remarks": "VAT Output - VAT Input"})
 
     # Add Sales & Profit
-    data.append({"category": _("Sales & Profit"), "metric": _("Net Sales"), "value": net_sales, "remarks": _("Sales grand total minus returns")})
-    data.append({"category": _("Sales & Profit"), "metric": _("Net Purchases"), "value": net_purchases, "remarks": _("Purchase grand total minus returns")})
-    data.append({"category": _("Sales & Profit"), "metric": _("Cost of Goods Sold (COGS)"), "value": cogs, "remarks": _("Cost of sales posted this period")})
-    data.append({"category": _("Sales & Profit"), "metric": _("Operating Expenses"), "value": other_expenses, "remarks": _("Expenses posted to expense ledger accounts (excluding COGS)")})
-    data.append({"category": _("Sales & Profit"), "metric": _("Net Operating Profit"), "value": net_profit, "remarks": _("Sales - COGS - Expenses")})
+    data.append({"category": "Sales & Profit", "metric": "Net Sales", "value": net_sales, "remarks": "Sales grand total minus returns"})
+    data.append({"category": "Sales & Profit", "metric": "Net Purchases", "value": net_purchases, "remarks": "Purchase grand total minus returns"})
+    data.append({"category": "Sales & Profit", "metric": "Cost of Goods Sold (COGS)", "value": cogs, "remarks": "Cost of sales posted this period"})
+    data.append({"category": "Sales & Profit", "metric": "Operating Expenses", "value": other_expenses, "remarks": "Expenses posted to expense ledger accounts (excluding COGS)"})
+    data.append({"category": "Sales & Profit", "metric": "Net Operating Profit", "value": net_profit, "remarks": "Sales - COGS - Expenses"})
 
     return data
 
 def get_report_summary(data):
     # Fetch KPI card metric rows
-    liquidity = next((row["value"] for row in data if row["metric"] == _("Total Liquidity") and row["category"] == _("Cash & Bank")), 0.0)
-    receivables = next((row["value"] for row in data if row["metric"] == _("Total Receivables")), 0.0)
-    payables = next((row["value"] for row in data if row["metric"] == _("Total Payables")), 0.0)
-    profit = next((row["value"] for row in data if row["metric"] == _("Net Operating Profit")), 0.0)
+    liquidity = next((row["value"] for row in data if row["metric"] == "Total Liquidity" and row["category"] == "Cash & Bank"), 0.0)
+    receivables = next((row["value"] for row in data if row["metric"] == "Total Receivables"), 0.0)
+    payables = next((row["value"] for row in data if row["metric"] == "Total Payables"), 0.0)
+    profit = next((row["value"] for row in data if row["metric"] == "Net Operating Profit"), 0.0)
 
     return [
         {

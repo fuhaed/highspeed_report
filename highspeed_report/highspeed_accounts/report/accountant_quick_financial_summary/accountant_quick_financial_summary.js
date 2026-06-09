@@ -34,16 +34,45 @@ frappe.query_reports["Accountant Quick Financial Summary"] = {
             return default_formatter(value, row, column, data);
         }
 
+        if (column.fieldname === "category" || column.fieldname === "metric" || column.fieldname === "remarks") {
+            return default_formatter(__(value), row, column, data);
+        }
+
         if (column.fieldname === "value") {
             const val = parseFloat(value) || 0;
             let formatted = default_formatter(value, row, column, data);
             if (formatted && formatted.includes("<div")) {
                 formatted = $(formatted).text().trim();
             }
-            if (data.metric && (data.metric.includes("Inflow") || data.metric.includes("Collected") || data.metric.includes("Profit") || data.metric.includes("Sales"))) {
+            
+            const green_metrics = [
+                "Net Inflow (Debit)",
+                "VAT Collected (Sales)",
+                "Net Operating Profit",
+                "Net Sales"
+            ];
+
+            const red_metrics = [
+                "Net Outflow (Credit)",
+                "VAT Paid (Purchases)",
+                "Total Payables",
+                "Overdue Payables",
+                "Payables (0-30 Days)",
+                "Payables (30-60 Days)",
+                "Payables (60+ Days)",
+                "Operating Expenses",
+                "Cost of Goods Sold (COGS)",
+                "Net Purchases"
+            ];
+
+            const metric_val = data.metric || "";
+            const is_green = green_metrics.some(m => metric_val === m || metric_val === __(m));
+            const is_red = red_metrics.some(m => metric_val === m || metric_val === __(m));
+
+            if (is_green) {
                 return `<span style="color: #27ae60; font-weight: bold;">+${formatted}</span>`;
             }
-            if (data.metric && (data.metric.includes("Outflow") || data.metric.includes("Paid") || data.metric.includes("Payables") || data.metric.includes("Expenses") || data.metric.includes("COGS"))) {
+            if (is_red) {
                 return `<span style="color: #e74c3c; font-weight: bold;">-${formatted}</span>`;
             }
             return `<span style="font-weight: bold; color: #2c3e50;">${formatted}</span>`;
@@ -233,7 +262,10 @@ function updateFinancialDashboard(data, $container) {
 
     // Extraction helper
     const getVal = (metric, cat) => {
-        const row = data.find(r => r.metric === metric && (cat ? r.category === cat : true));
+        const row = data.find(r => 
+            (r.metric === metric || r.metric === __(metric)) && 
+            (cat ? (r.category === cat || r.category === __(cat)) : true)
+        );
         return row ? flt(row.value) : 0.0;
     };
 
@@ -259,7 +291,7 @@ function updateFinancialDashboard(data, $container) {
 
     // Cash & Bank accounts details
     let accounts_rows = '';
-    const details = data.filter(r => r.category === "Cash & Bank Accounts Detail");
+    const details = data.filter(r => r.category === "Cash & Bank Accounts Detail" || r.category === __("Cash & Bank Accounts Detail"));
     details.forEach(d => {
         accounts_rows += `
             <tr>
@@ -273,7 +305,7 @@ function updateFinancialDashboard(data, $container) {
     });
 
     if (!accounts_rows) {
-        accounts_rows = `<tr><td colspan="3" style="text-align: center; color: #64748b;">${__("لا توجد تفاصيل للحسابات")}</td></tr>`;
+        accounts_rows = `<tr><td colspan="3" style="text-align: center; color: #64748b;">${__("No account details found")}</td></tr>`;
     }
 
     const html = `
@@ -281,44 +313,44 @@ function updateFinancialDashboard(data, $container) {
             <div class="financial-kpi-grid">
                 <div class="financial-card">
                     <span class="card-icon">💵</span>
-                    <div class="card-title">${__("السيولة المتوفرة / Total Liquidity")}</div>
+                    <div class="card-title">${__("Total Liquidity")}</div>
                     <div class="card-value text-green">${frappe.format(total_liquidity, {fieldtype: 'Currency'})}</div>
-                    <div class="card-sub">${__("صناديق")}: ${frappe.format(cash_in_hand, {fieldtype: 'Currency'})} | ${__("بنوك")}: ${frappe.format(bank_balances, {fieldtype: 'Currency'})}</div>
+                    <div class="card-sub">${__("Cash")}: ${frappe.format(cash_in_hand, {fieldtype: 'Currency'})} | ${__("Bank")}: ${frappe.format(bank_balances, {fieldtype: 'Currency'})}</div>
                 </div>
                 <div class="financial-card">
                     <span class="card-icon">📈</span>
-                    <div class="card-title">${__("مستحقات العملاء / Total Receivables")}</div>
+                    <div class="card-title">${__("Total Receivables")}</div>
                     <div class="card-value" style="color: #2980b9;">${frappe.format(total_receivables, {fieldtype: 'Currency'})}</div>
                     <div class="card-sub" style="color: ${overdue_receivables > 0 ? '#dc2626' : '#64748b'}; font-weight: ${overdue_receivables > 0 ? '700' : '400'};">
-                        ${__("المتأخر منها")}: ${frappe.format(overdue_receivables, {fieldtype: 'Currency'})}
+                        ${__("Overdue")}: ${frappe.format(overdue_receivables, {fieldtype: 'Currency'})}
                     </div>
                 </div>
                 <div class="financial-card">
                     <span class="card-icon">📉</span>
-                    <div class="card-title">${__("التزامات الموردين / Total Payables")}</div>
+                    <div class="card-title">${__("Total Payables")}</div>
                     <div class="card-value" style="color: #c0392b;">${frappe.format(total_payables, {fieldtype: 'Currency'})}</div>
                     <div class="card-sub" style="color: ${overdue_payables > 0 ? '#dc2626' : '#64748b'}; font-weight: ${overdue_payables > 0 ? '700' : '400'};">
-                        ${__("المستحق منها")}: ${frappe.format(overdue_payables, {fieldtype: 'Currency'})}
+                        ${__("Overdue")}: ${frappe.format(overdue_payables, {fieldtype: 'Currency'})}
                     </div>
                 </div>
                 <div class="financial-card">
                     <span class="card-icon">📊</span>
-                    <div class="card-title">${__("صافي الربح التشغيلي / Operating Profit")}</div>
+                    <div class="card-title">${__("Operating Profit")}</div>
                     <div class="card-value" style="color: ${net_profit < 0 ? '#dc2626' : '#16a34a'};">${frappe.format(net_profit, {fieldtype: 'Currency'})}</div>
-                    <div class="card-sub">${__("مبيعات")}: ${frappe.format(net_sales, {fieldtype: 'Currency'})} | ${__("مشتريات")}: ${frappe.format(net_purchases, {fieldtype: 'Currency'})}</div>
+                    <div class="card-sub">${__("Sales")}: ${frappe.format(net_sales, {fieldtype: 'Currency'})} | ${__("Purchases")}: ${frappe.format(net_purchases, {fieldtype: 'Currency'})}</div>
                 </div>
             </div>
 
             <div class="financial-panels-grid">
                 <div class="financial-panel">
-                    <div class="panel-header">${__("تفاصيل أرصدة الصناديق والبنوك / Cash & Bank Accounts")}</div>
+                    <div class="panel-header">${__("Cash & Bank Accounts")}</div>
                     <div class="panel-body" style="max-height: 300px; overflow-y: auto;">
                         <table class="panel-table">
                             <thead>
                                 <tr>
-                                    <th>${__("الحساب / Account")}</th>
-                                    <th>${__("النوع / Type")}</th>
-                                    <th style="text-align: left;">${__("الرصيد / Balance")}</th>
+                                    <th>${__("Account")}</th>
+                                    <th>${__("Type")}</th>
+                                    <th style="text-align: left;">${__("Balance")}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -329,46 +361,46 @@ function updateFinancialDashboard(data, $container) {
                 </div>
 
                 <div class="financial-panel">
-                    <div class="panel-header">${__("الضرائب وأعمار المديونيات / Tax & Aging Analysis")}</div>
+                    <div class="panel-header">${__("Tax & Aging Analysis")}</div>
                     <div class="panel-body">
-                        <div class="sub-panel-title">${__("إقرار ضريبة القيمة المضافة التقريبي / VAT Estimate")}</div>
+                        <div class="sub-panel-title">${__("VAT Estimate")}</div>
                         <div class="stat-row">
-                            <span class="stat-label">${__("ضريبة مبيعات محصلة (مخرج) / VAT Collected")}:</span>
+                            <span class="stat-label">${__("VAT Collected")}:</span>
                             <span class="stat-value text-green">+${frappe.format(vat_collected, {fieldtype: 'Currency'})}</span>
                         </div>
                         <div class="stat-row">
-                            <span class="stat-label">${__("ضريبة مشتريات مستردة (مدخل) / VAT Paid")}:</span>
+                            <span class="stat-label">${__("VAT Paid")}:</span>
                             <span class="stat-value text-red">-${frappe.format(vat_paid, {fieldtype: 'Currency'})}</span>
                         </div>
                         <div class="stat-row highlight-row">
-                            <span class="stat-label">${__("صافي التزام الضريبة / Net VAT Liability")}:</span>
+                            <span class="stat-label">${__("Net VAT Liability")}:</span>
                             <span class="stat-value ${net_vat_liability < 0 ? 'text-green' : 'text-red'}">
                                 ${net_vat_liability < 0 ? '' : '+'}${frappe.format(net_vat_liability, {fieldtype: 'Currency'})}
                             </span>
                         </div>
 
-                        <div class="sub-panel-title" style="margin-top: 18px;">${__("تحليل أعمار الديون والالتزامات / AR & AP Aging")}</div>
+                        <div class="sub-panel-title" style="margin-top: 18px;">${__("AR & AP Aging")}</div>
                         <table class="aging-table">
                             <thead>
                                 <tr>
-                                    <th>${__("العمر / Age")}</th>
-                                    <th style="color: #2980b9;">${__("مستحقات العملاء / AR")}</th>
-                                    <th style="color: #c0392b;">${__("مستحقات الموردين / AP")}</th>
+                                    <th>${__("Age")}</th>
+                                    <th style="color: #2980b9;">${__("AR")}</th>
+                                    <th style="color: #c0392b;">${__("AP")}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>0 - 30 ${__("يوم / Days")}</td>
+                                    <td>${__("0-30 Days")}</td>
                                     <td class="stat-value">${frappe.format(ar_aging_30, {fieldtype: 'Currency'})}</td>
                                     <td class="stat-value">${frappe.format(ap_aging_30, {fieldtype: 'Currency'})}</td>
                                 </tr>
                                 <tr>
-                                    <td>30 - 60 ${__("يوم / Days")}</td>
+                                    <td>${__("30-60 Days")}</td>
                                     <td class="stat-value text-orange">${frappe.format(ar_aging_60, {fieldtype: 'Currency'})}</td>
                                     <td class="stat-value text-orange">${frappe.format(ap_aging_60, {fieldtype: 'Currency'})}</td>
                                 </tr>
                                 <tr>
-                                    <td>${__("أكثر من 60 يوم / 60+ Days")}</td>
+                                    <td>${__("60+ Days")}</td>
                                     <td class="stat-value text-red text-bold">${frappe.format(ar_aging_90, {fieldtype: 'Currency'})}</td>
                                     <td class="stat-value text-red text-bold">${frappe.format(ap_aging_90, {fieldtype: 'Currency'})}</td>
                                 </tr>
@@ -385,7 +417,10 @@ function updateFinancialDashboard(data, $container) {
 
 function get_accountant_print_html(data, filters) {
     const getVal = (metric, cat) => {
-        const row = data.find(r => r.metric === metric && (cat ? r.category === cat : true));
+        const row = data.find(r => 
+            (r.metric === metric || r.metric === __(metric)) && 
+            (cat ? (r.category === cat || r.category === __(cat)) : true)
+        );
         return row ? flt(row.value) : 0.0;
     };
 
@@ -410,7 +445,7 @@ function get_accountant_print_html(data, filters) {
     const ap_aging_90 = getVal("Payables (60+ Days)");
 
     let accounts_rows = '';
-    const details = data.filter(r => r.category === "Cash & Bank Accounts Detail");
+    const details = data.filter(r => r.category === "Cash & Bank Accounts Detail" || r.category === __("Cash & Bank Accounts Detail"));
     details.forEach(d => {
         accounts_rows += `
             <tr>
@@ -424,21 +459,22 @@ function get_accountant_print_html(data, filters) {
     });
 
     const currentDate = frappe.datetime.get_today();
+    const dir = document.documentElement.dir || 'rtl';
     return `
     <!DOCTYPE html>
-    <html dir="rtl">
+    <html dir="${dir}">
     <head>
         <meta charset="UTF-8">
-        <title>الملخص المالي السريع للمحاسب</title>
+        <title>${__("Accountant Quick Financial Summary")}</title>
         <style>
             @page { size: A4 portrait; margin: 0.5cm; }
-            body { font-family: Arial, sans-serif; margin: 0; padding: 10px; direction: rtl; font-size: 11px; }
+            body { font-family: Arial, sans-serif; margin: 0; padding: 10px; direction: ${dir}; font-size: 11px; }
             .header-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
             .header-table td { border: none; text-align: center; }
             .header-table h3 { margin: 5px 0; font-size: 16px; }
             .header-table h4 { margin: 5px 0; font-size: 14px; color: #555; }
             .info-table, .data-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-            .info-table td, .info-table th { border: 1px solid #ddd; padding: 6px; text-align: right; }
+            .info-table td, .info-table th { border: 1px solid #ddd; padding: 6px; text-align: ${dir === 'rtl' ? 'right' : 'left'}; }
             .data-table td, .data-table th { border: 1px solid #ccc; padding: 6px; text-align: center; }
             .data-table th { background-color: #f5f5f5; font-weight: bold; }
             .section-title { font-size: 12px; font-weight: bold; color: #2c3e50; margin: 15px 0 8px 0; padding-bottom: 3px; border-bottom: 2px solid #34495e; }
@@ -457,48 +493,48 @@ function get_accountant_print_html(data, filters) {
                 <tr>
                     <td style="text-align: center;">
                         <h3>${filters.company || ""}</h3>
-                        <h4>الملخص المالي السريع للمحاسب / Accountant Quick Financial Summary</h4>
+                        <h4>${__("Accountant Quick Financial Summary")}</h4>
                     </td>
                 </tr>
             </table>
         </div>
         <table class="info-table">
             <tr>
-                <td style="font-weight: bold; width: 15%;">الفترة / Period:</td>
-                <td class="en-number" style="text-align: right;">${filters.from_date || ""} إلى ${filters.to_date || ""}</td>
-                <td style="font-weight: bold; width: 15%;">تاريخ الطباعة:</td>
-                <td class="en-number" style="text-align: right;">${currentDate}</td>
+                <td style="font-weight: bold; width: 15%;">${__("Period")}:</td>
+                <td class="en-number" style="text-align: ${dir === 'rtl' ? 'right' : 'left'};">${filters.from_date || ""} ${__("to")} ${filters.to_date || ""}</td>
+                <td style="font-weight: bold; width: 15%;">${__("Print Date")}:</td>
+                <td class="en-number" style="text-align: ${dir === 'rtl' ? 'right' : 'left'};">${currentDate}</td>
             </tr>
         </table>
         
         <table class="kpi-summary-table">
             <tr>
                 <td>
-                    <div class="kpi-title">السيولة المتوفرة / Total Liquidity</div>
+                    <div class="kpi-title">${__("Total Liquidity")}</div>
                     <div class="kpi-value text-green">${frappe.format(total_liquidity, {fieldtype: 'Currency'})}</div>
                 </td>
                 <td>
-                    <div class="kpi-title">مستحقات العملاء / Total Receivables</div>
+                    <div class="kpi-title">${__("Total Receivables")}</div>
                     <div class="kpi-value" style="color: #2980b9;">${frappe.format(total_receivables, {fieldtype: 'Currency'})}</div>
                 </td>
                 <td>
-                    <div class="kpi-title">التزامات الموردين / Total Payables</div>
+                    <div class="kpi-title">${__("Total Payables")}</div>
                     <div class="kpi-value" style="color: #c0392b;">${frappe.format(total_payables, {fieldtype: 'Currency'})}</div>
                 </td>
                 <td>
-                    <div class="kpi-title">صافي الربح التشغيلي / Net Profit</div>
+                    <div class="kpi-title">${__("Net Profit")}</div>
                     <div class="kpi-value" style="color: ${net_profit < 0 ? '#dc2626' : '#16a34a'};">${frappe.format(net_profit, {fieldtype: 'Currency'})}</div>
                 </td>
             </tr>
         </table>
 
-        <div class="section-title">أرصدة البنوك والصناديق / Cash & Bank Balances</div>
+        <div class="section-title">${__("Cash & Bank Balances")}</div>
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>الحساب / Account</th>
-                    <th>النوع / Type</th>
-                    <th style="text-align: left;">الرصيد / Balance</th>
+                    <th>${__("Account")}</th>
+                    <th>${__("Type")}</th>
+                    <th style="${dir === 'rtl' ? 'text-align: left;' : 'text-align: right;'}">${__("Balance")}</th>
                 </tr>
             </thead>
             <tbody>
@@ -506,22 +542,22 @@ function get_accountant_print_html(data, filters) {
             </tbody>
         </table>
 
-        <div class="section-title">الضرائب وأعمار الديون / Tax & Aging Analysis</div>
+        <div class="section-title">${__("Tax & Aging Analysis")}</div>
         <table style="width: 100%; border: none;">
             <tr style="vertical-align: top;">
-                <td style="width: 48%; padding-left: 10px;">
-                    <div style="font-weight: bold; margin-bottom: 5px;">ضريبة القيمة المضافة / VAT Report</div>
+                <td style="width: 48%; ${dir === 'rtl' ? 'padding-left: 10px;' : 'padding-right: 10px;'}">
+                    <div style="font-weight: bold; margin-bottom: 5px;">${__("VAT Report")}</div>
                     <table class="info-table" style="width: 100%;">
                         <tr>
-                            <td>ضريبة مبيعات محصلة / VAT Collected</td>
+                            <td>${__("VAT Collected")}</td>
                             <td class="en-number text-green">+${frappe.format(vat_collected, {fieldtype: 'Currency'})}</td>
                         </tr>
                         <tr>
-                            <td>ضريبة مشتريات مستردة / VAT Paid</td>
+                            <td>${__("VAT Paid")}</td>
                             <td class="en-number text-red">-${frappe.format(vat_paid, {fieldtype: 'Currency'})}</td>
                         </tr>
                         <tr style="font-weight: bold; background-color: #f5f5f5;">
-                            <td>صافي الالتزام الضريبي / Net VAT Liability</td>
+                            <td>${__("Net VAT Liability")}</td>
                             <td class="en-number ${net_vat_liability < 0 ? 'text-green' : 'text-red'}">
                                 ${frappe.format(net_vat_liability, {fieldtype: 'Currency'})}
                             </td>
@@ -530,28 +566,28 @@ function get_accountant_print_html(data, filters) {
                 </td>
                 <td style="width: 4%;">&nbsp;</td>
                 <td style="width: 48%;">
-                    <div style="font-weight: bold; margin-bottom: 5px;">أعمار الديون والالتزامات / AR & AP Aging</div>
+                    <div style="font-weight: bold; margin-bottom: 5px;">${__("AR & AP Aging")}</div>
                     <table class="data-table" style="width: 100%;">
                         <thead>
                             <tr>
-                                <th>العمر / Age</th>
-                                <th>مستحقات العملاء / AR</th>
-                                <th>مستحقات الموردين / AP</th>
+                                <th>${__("Age")}</th>
+                                <th>${__("AR")}</th>
+                                <th>${__("AP")}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>0 - 30 يوم / Days</td>
+                                <td>${__("0-30 Days")}</td>
                                 <td class="en-number">${frappe.format(ar_aging_30, {fieldtype: 'Currency'})}</td>
                                 <td class="en-number">${frappe.format(ap_aging_30, {fieldtype: 'Currency'})}</td>
                             </tr>
                             <tr>
-                                <td>30 - 60 يوم / Days</td>
+                                <td>${__("30-60 Days")}</td>
                                 <td class="en-number">${frappe.format(ar_aging_60, {fieldtype: 'Currency'})}</td>
                                 <td class="en-number">${frappe.format(ap_aging_60, {fieldtype: 'Currency'})}</td>
                             </tr>
                             <tr style="font-weight: bold;">
-                                <td>أكثر من 60 يوم / 60+ Days</td>
+                                <td>${__("60+ Days")}</td>
                                 <td class="en-number text-red">${frappe.format(ar_aging_90, {fieldtype: 'Currency'})}</td>
                                 <td class="en-number text-red">${frappe.format(ap_aging_90, {fieldtype: 'Currency'})}</td>
                             </tr>
