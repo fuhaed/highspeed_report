@@ -14,7 +14,7 @@
  "module": "Highspeed Accounts",
  "name": "Parent Accounts Trial Balance",
  "owner": "Administrator",
- "prepared_report": 1,
+ "prepared_report": 0,
  "ref_doctype": "GL Entry",
  "report_name": "Parent Accounts Trial Balance",
  "report_type": "Script Report",
@@ -29,5 +29,6 @@
    "role": "Auditor"
   }
  ],
- "timeout": 0
+ "timeout": 0,
+ "disable_prepared_report": 1
 }
