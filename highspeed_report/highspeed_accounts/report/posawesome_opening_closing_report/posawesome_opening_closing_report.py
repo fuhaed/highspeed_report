@@ -72,7 +72,7 @@ def get_doctype_names():
 
 
 def get_columns(filters):
-    doctype_opening, doctype_closing, _, _, _ = get_doctype_names()
+    doctype_opening, doctype_closing, doctype_opening_detail, doctype_closing_detail, fk_opening_shift = get_doctype_names()
     
     columns = [
         {
