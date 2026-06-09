@@ -58,6 +58,30 @@
    "type": "Link"
   },
   {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Product Profitability",
+   "link_count": 0,
+   "link_to": "Simplified Product Profitability",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Executive Daily Sales Summary",
+   "link_count": 0,
+   "link_to": "Executive Daily Sales Summary",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Link"
+  },
+  {
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales and POS Reports",
@@ -72,30 +96,6 @@
    "label": "Detailed Sales",
    "link_count": 0,
    "link_to": "Detailed Sales",
-   "link_type": "Report",
-   "onboard": 1,
-   "report_ref_doctype": "Sales Invoice",
-   "type": "Link"
-  },
-  {
-   "dependencies": "",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Detailed Sales Log",
-   "link_count": 0,
-   "link_to": "Detailed Sales Log",
-   "link_type": "Report",
-   "onboard": 1,
-   "report_ref_doctype": "Sales Invoice",
-   "type": "Link"
-  },
-  {
-   "dependencies": "",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Simple Sales Log",
-   "link_count": 0,
-   "link_to": "Simple Sales Log",
    "link_type": "Report",
    "onboard": 1,
    "report_ref_doctype": "Sales Invoice",
@@ -153,12 +153,12 @@
    "dependencies": "",
    "hidden": 0,
    "is_query_report": 1,
-   "label": "POSAwesome Opening Closing Report",
+   "label": "Daily Payment Reconciliation",
    "link_count": 0,
-   "link_to": "POSAwesome Opening Closing Report",
+   "link_to": "Daily Payment Reconciliation",
    "link_type": "Report",
    "onboard": 1,
-   "report_ref_doctype": "POS Opening Shift",
+   "report_ref_doctype": "Sales Invoice",
    "type": "Link"
   },
   {
@@ -215,6 +215,18 @@
    "link_type": "Report",
    "onboard": 1,
    "report_ref_doctype": "Purchase Invoice",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Simplified Cash Bank Ledger",
+   "link_count": 0,
+   "link_to": "Simplified Cash Bank Ledger",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "GL Entry",
    "type": "Link"
   },
   {
@@ -304,6 +316,18 @@
    "label": "Simple Items Barcode",
    "link_count": 0,
    "link_to": "Simple Items Barcode",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "Item",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Low Stock Reorder Alert",
+   "link_count": 0,
+   "link_to": "Low Stock Reorder Alert",
    "link_type": "Report",
    "onboard": 1,
    "report_ref_doctype": "Item",
