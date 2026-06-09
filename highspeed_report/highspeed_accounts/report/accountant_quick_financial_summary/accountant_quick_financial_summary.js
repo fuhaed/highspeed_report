@@ -262,6 +262,15 @@ function updateFinancialDashboard(data, $container) {
                 .text-red { color: #dc2626 !important; }
                 .text-orange { color: #ea580c !important; }
                 .text-bold { font-weight: bold; }
+                
+                /* Force report table container to be full width */
+                .report-container, .report-wrapper, .dt-container, .dt-scrollable {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                }
+                .slick-viewport, .slick-grid {
+                    width: 100% !important;
+                }
             </style>
         `);
     }

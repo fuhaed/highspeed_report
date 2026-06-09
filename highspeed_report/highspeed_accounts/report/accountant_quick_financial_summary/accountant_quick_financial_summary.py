@@ -25,25 +25,31 @@ def get_columns():
             "label": _("Category"),
             "fieldname": "category",
             "fieldtype": "Data",
-            "width": 180
+            "width": 240
         },
         {
             "label": _("Metric"),
             "fieldname": "metric",
             "fieldtype": "Data",
-            "width": 260
+            "width": 280
         },
         {
             "label": _("Value"),
             "fieldname": "value",
             "fieldtype": "Currency",
-            "width": 160
+            "width": 180
+        },
+        {
+            "label": _("Ratio %"),
+            "fieldname": "ratio",
+            "fieldtype": "Percent",
+            "width": 140
         },
         {
             "label": _("Remarks"),
             "fieldname": "remarks",
             "fieldtype": "Data",
-            "width": 300
+            "width": 420
         }
     ]
 
@@ -250,10 +256,12 @@ def get_data(filters):
 
     net_profit = net_sales - cogs - other_expenses
 
+    total_liquidity = total_cash + total_bank
+
     # Add Cash & Bank
-    data.append({"category": "Cash & Bank", "metric": "Cash in Hand", "value": total_cash, "remarks": "Total cash balance across all registers"})
-    data.append({"category": "Cash & Bank", "metric": "Bank Balances", "value": total_bank, "remarks": "Total balance in bank accounts"})
-    data.append({"category": "Cash & Bank", "metric": "Total Liquidity", "value": total_cash + total_bank, "remarks": "Cash + Bank Balances"})
+    data.append({"category": "Cash & Bank", "metric": "Cash in Hand", "value": total_cash, "ratio": flt(total_cash / total_liquidity * 100) if total_liquidity else 0, "remarks": "Total cash balance across all registers"})
+    data.append({"category": "Cash & Bank", "metric": "Bank Balances", "value": total_bank, "ratio": flt(total_bank / total_liquidity * 100) if total_liquidity else 0, "remarks": "Total balance in bank accounts"})
+    data.append({"category": "Cash & Bank", "metric": "Total Liquidity", "value": total_liquidity, "ratio": 100.0 if total_liquidity else 0, "remarks": "Cash + Bank Balances"})
     data.append({"category": "Cash & Bank", "metric": "Net Inflow (Debit)", "value": inflow_outflow["inflow"], "remarks": "Total debit transactions this period"})
     data.append({"category": "Cash & Bank", "metric": "Net Outflow (Credit)", "value": inflow_outflow["outflow"], "remarks": "Total credit transactions this period"})
     
@@ -263,22 +271,23 @@ def get_data(filters):
             "category": "Cash & Bank Accounts Detail",
             "metric": acc["account_name"],
             "value": acc["balance"],
+            "ratio": flt(acc["balance"] / total_liquidity * 100) if total_liquidity else 0,
             "remarks": acc["type"]
         })
 
     # Add Receivables (AR)
-    data.append({"category": "Accounts Receivable (AR)", "metric": "Total Receivables", "value": ar_total, "remarks": "Total outstanding customer invoice balances"})
-    data.append({"category": "Accounts Receivable (AR)", "metric": "Overdue Receivables", "value": ar_overdue, "remarks": "Receivables past their invoice due dates"})
-    data.append({"category": "Accounts Receivable (AR)", "metric": "Receivables (0-30 Days)", "value": ar_aging_30, "remarks": "Outstanding within 30 days"})
-    data.append({"category": "Accounts Receivable (AR)", "metric": "Receivables (30-60 Days)", "value": ar_aging_60, "remarks": "Outstanding within 30 to 60 days"})
-    data.append({"category": "Accounts Receivable (AR)", "metric": "Receivables (60+ Days)", "value": ar_aging_90, "remarks": "Outstanding overdue for more than 60 days"})
+    data.append({"category": "Accounts Receivable (AR)", "metric": "Total Receivables", "value": ar_total, "ratio": 100.0 if ar_total else 0, "remarks": "Total outstanding customer invoice balances"})
+    data.append({"category": "Accounts Receivable (AR)", "metric": "Overdue Receivables", "value": ar_overdue, "ratio": flt(ar_overdue / ar_total * 100) if ar_total else 0, "remarks": "Receivables past their invoice due dates"})
+    data.append({"category": "Accounts Receivable (AR)", "metric": "Receivables (0-30 Days)", "value": ar_aging_30, "ratio": flt(ar_aging_30 / ar_total * 100) if ar_total else 0, "remarks": "Outstanding within 30 days"})
+    data.append({"category": "Accounts Receivable (AR)", "metric": "Receivables (30-60 Days)", "value": ar_aging_60, "ratio": flt(ar_aging_60 / ar_total * 100) if ar_total else 0, "remarks": "Outstanding within 30 to 60 days"})
+    data.append({"category": "Accounts Receivable (AR)", "metric": "Receivables (60+ Days)", "value": ar_aging_90, "ratio": flt(ar_aging_90 / ar_total * 100) if ar_total else 0, "remarks": "Outstanding overdue for more than 60 days"})
 
     # Add Payables (AP)
-    data.append({"category": "Accounts Payable (AP)", "metric": "Total Payables", "value": ap_total, "remarks": "Total outstanding supplier invoice balances"})
-    data.append({"category": "Accounts Payable (AP)", "metric": "Overdue Payables", "value": ap_overdue, "remarks": "Payables past their invoice due dates"})
-    data.append({"category": "Accounts Payable (AP)", "metric": "Payables (0-30 Days)", "value": ap_aging_30, "remarks": "Supplier outstanding within 30 days"})
-    data.append({"category": "Accounts Payable (AP)", "metric": "Payables (30-60 Days)", "value": ap_aging_60, "remarks": "Supplier outstanding within 30 to 60 days"})
-    data.append({"category": "Accounts Payable (AP)", "metric": "Payables (60+ Days)", "value": ap_aging_90, "remarks": "Supplier outstanding overdue for more than 60 days"})
+    data.append({"category": "Accounts Payable (AP)", "metric": "Total Payables", "value": ap_total, "ratio": 100.0 if ap_total else 0, "remarks": "Total outstanding supplier invoice balances"})
+    data.append({"category": "Accounts Payable (AP)", "metric": "Overdue Payables", "value": ap_overdue, "ratio": flt(ap_overdue / ap_total * 100) if ap_total else 0, "remarks": "Payables past their invoice due dates"})
+    data.append({"category": "Accounts Payable (AP)", "metric": "Payables (0-30 Days)", "value": ap_aging_30, "ratio": flt(ap_aging_30 / ap_total * 100) if ap_total else 0, "remarks": "Supplier outstanding within 30 days"})
+    data.append({"category": "Accounts Payable (AP)", "metric": "Payables (30-60 Days)", "value": ap_aging_60, "ratio": flt(ap_aging_60 / ap_total * 100) if ap_total else 0, "remarks": "Supplier outstanding within 30 to 60 days"})
+    data.append({"category": "Accounts Payable (AP)", "metric": "Payables (60+ Days)", "value": ap_aging_90, "ratio": flt(ap_aging_90 / ap_total * 100) if ap_total else 0, "remarks": "Supplier outstanding overdue for more than 60 days"})
 
     # Add Tax / VAT
     data.append({"category": "Tax & VAT", "metric": "VAT Collected (Sales)", "value": vat_collected, "remarks": "VAT Output collected on Sales"})
@@ -286,11 +295,11 @@ def get_data(filters):
     data.append({"category": "Tax & VAT", "metric": "Net VAT Liability", "value": net_vat_liability, "remarks": "VAT Output - VAT Input"})
 
     # Add Sales & Profit
-    data.append({"category": "Sales & Profit", "metric": "Net Sales", "value": net_sales, "remarks": "Sales grand total minus returns"})
-    data.append({"category": "Sales & Profit", "metric": "Net Purchases", "value": net_purchases, "remarks": "Purchase grand total minus returns"})
-    data.append({"category": "Sales & Profit", "metric": "Cost of Goods Sold (COGS)", "value": cogs, "remarks": "Cost of sales posted this period"})
-    data.append({"category": "Sales & Profit", "metric": "Operating Expenses", "value": other_expenses, "remarks": "Expenses posted to expense ledger accounts (excluding COGS)"})
-    data.append({"category": "Sales & Profit", "metric": "Net Operating Profit", "value": net_profit, "remarks": "Sales - COGS - Expenses"})
+    data.append({"category": "Sales & Profit", "metric": "Net Sales", "value": net_sales, "ratio": 100.0 if net_sales else 0, "remarks": "Sales grand total minus returns"})
+    data.append({"category": "Sales & Profit", "metric": "Net Purchases", "value": net_purchases, "ratio": flt(net_purchases / net_sales * 100) if net_sales else 0, "remarks": "Purchase grand total minus returns"})
+    data.append({"category": "Sales & Profit", "metric": "Cost of Goods Sold (COGS)", "value": cogs, "ratio": flt(cogs / net_sales * 100) if net_sales else 0, "remarks": "Cost of sales posted this period"})
+    data.append({"category": "Sales & Profit", "metric": "Operating Expenses", "value": other_expenses, "ratio": flt(other_expenses / net_sales * 100) if net_sales else 0, "remarks": "Expenses posted to expense ledger accounts (excluding COGS)"})
+    data.append({"category": "Sales & Profit", "metric": "Net Operating Profit", "value": net_profit, "ratio": flt(net_profit / net_sales * 100) if net_sales else 0, "remarks": "Sales - COGS - Expenses"})
 
     return data
 
