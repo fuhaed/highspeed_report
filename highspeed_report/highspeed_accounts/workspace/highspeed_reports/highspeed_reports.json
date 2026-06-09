@@ -26,6 +26,18 @@
    "dependencies": "",
    "hidden": 0,
    "is_query_report": 1,
+   "label": "Accountant Quick Financial Summary",
+   "link_count": 0,
+   "link_to": "Accountant Quick Financial Summary",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "GL Entry",
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
    "label": "Tax Declaration Report",
    "link_count": 0,
    "link_to": "Tax Declaration Report",

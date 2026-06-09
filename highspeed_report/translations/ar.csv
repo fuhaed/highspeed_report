@@ -287,3 +287,110 @@ Print,طباعة
 Close,إغلاق
 "Generating Excel file, please wait...","جاري إنشاء ملف Excel، يرجى الانتظار..."
 Excel file generated successfully!,تم إنشاء ملف Excel بنجاح!
+Accountant Quick Financial Summary,الملخص المالي السريع للمحاسب
+Cash & Bank,النقدية والبنوك
+Cash in Hand,نقد في الصناديق
+Total cash balance across all registers,إجمالي النقدية المتوفرة بكافة الصناديق
+Bank Balances,أرصدة البنوك
+Total balance in bank accounts,إجمالي الرصيد المتوفر بالحسابات البنكية
+Total Liquidity,إجمالي السيولة
+Cash + Bank Balances,النقدية بالصندوق + الحسابات البنكية
+Net Inflow (Debit),صافي التدفقات الواردة (مدين)
+Total debit transactions this period,إجمالي الحركات المدينة خلال هذه الفترة
+Net Outflow (Credit),صافي التدفقات الصادرة (دائن)
+Total credit transactions this period,إجمالي الحركات الدائنة خلال هذه الفترة
+Cash & Bank Accounts Detail,تفاصيل أرصدة الصناديق والبنوك
+Accounts Receivable (AR),مستحقات العملاء (AR)
+Total Receivables,إجمالي المستحقات
+Total outstanding customer invoice balances,إجمالي الأرصدة المتبقية من فواتير مبيعات العملاء
+Overdue Receivables,المستحقات المتأخرة
+Receivables past their invoice due dates,المستحقات المتجاوزة لتاريخ الاستحقاق المحدد
+Receivables (0-30 Days),ديون (0 - 30 يوم)
+Outstanding within 30 days,مستحقات معلقة خلال 30 يوم
+Receivables (30-60 Days),ديون (30 - 60 يوم)
+Outstanding within 30 to 60 days,مستحقات معلقة خلال 30 إلى 60 يوم
+Receivables (60+ Days),ديون (أكثر من 60 يوم)
+Outstanding overdue for more than 60 days,مستحقات متأخرة لأكثر من 60 يوم
+Accounts Payable (AP),التزامات الموردين (AP)
+Total Payables,إجمالي الالتزامات
+Total outstanding supplier invoice balances,إجمالي الأرصدة المتبقية من فواتير مشتريات الموردين
+Overdue Payables,الالتزامات المتأخرة
+Payables past their invoice due dates,الالتزامات المتجاوزة لتاريخ الاستحقاق المحدد
+Payables (0-30 Days),التزامات (0 - 30 يوم)
+Supplier outstanding within 30 days,التزامات معلقة خلال 30 يوم
+Payables (30-60 Days),التزامات (30 - 60 يوم)
+Supplier outstanding within 30 to 60 days,التزامات معلقة خلال 30 إلى 60 يوم
+Payables (60+ Days),التزامات (أكثر من 60 يوم)
+Supplier outstanding overdue for more than 60 days,التزامات متأخرة للموردين لأكثر من 60 يوم
+Tax & VAT,الضرائب والقيمة المضافة
+VAT Collected (Sales),ضريبة مبيعات محصلة
+VAT Output collected on Sales,مخرجات ضريبة القيمة المضافة المحصلة على المبيعات
+VAT Paid (Purchases),ضريبة مشتريات مستردة
+VAT Input paid on Purchases,مدخلات ضريبة القيمة المضافة المدفوعة على المشتريات
+Net VAT Liability,صافي الالتزام الضريبي
+VAT Output - VAT Input,ضريبة المخرجات - ضريبة المدخلات
+Sales & Profit,المبيعات والأرباح
+Sales grand total minus returns,صافي المبيعات (إجمالي المبيعات ناقص المرتجعات)
+Net Purchases,صافي المشتريات
+Purchase grand total minus returns,صافي المشتريات (إجمالي المشتريات ناقص المرتجعات)
+Cost of Goods Sold (COGS),تكلفة البضاعة المباعة (COGS)
+Cost of sales posted this period,تكلفة المبيعات المسجلة خلال هذه الفترة
+Operating Expenses,المصروفات التشغيلية
+Expenses posted to expense ledger accounts (excluding COGS),المصروفات التشغيلية المسجلة (عدا تكلفة البضاعة)
+Net Operating Profit,صافي الربح التشغيلي
+Sales - COGS - Expenses,المبيعات - تكلفة البضاعة - المصروفات
+Operating Profit,صافي الربح التشغيلي
+"السيولة المتوفرة / Total Liquidity","السيولة المتوفرة / Total Liquidity"
+"مستحقات العملاء / Total Receivables","مستحقات العملاء / Total Receivables"
+"التزامات الموردين / Total Payables","التزامات الموردين / Total Payables"
+"صافي الربح التشغيلي / Operating Profit","صافي الربح التشغيلي / Operating Profit"
+"صناديق","صناديق"
+"بنوك","بنوك"
+"المتأخر منها","المتأخر منها"
+"المستحق منها","المستحق منها"
+"تفاصيل أرصدة الصناديق والبنوك / Cash & Bank Accounts","تفاصيل أرصدة الصناديق والبنوك / Cash & Bank Accounts"
+"الضرائب وأعمار المديونيات / Tax & Aging Analysis","الضرائب وأعمار المديونيات / Tax & Aging Analysis"
+"إقرار ضريبة القيمة المضافة التقريبي / VAT Estimate","إقرار ضريبة القيمة المضافة التقريبي / VAT Estimate"
+"ضريبة مبيعات محصلة (مخرج) / VAT Collected","ضريبة مبيعات محصلة (مخرج) / VAT Collected"
+"ضريبة مشتريات مستردة (مدخل) / VAT Paid","ضريبة مشتريات مستردة (مدخل) / VAT Paid"
+"صافي التزام الضريبة / Net VAT Liability","صافي التزام الضريبة / Net VAT Liability"
+"تحليل أعمار الديون والالتزامات / AR & AP Aging","تحليل أعمار الديون والالتزامات / AR & AP Aging"
+"العمر / Age","العمر / Age"
+"مستحقات العملاء / AR","مستحقات العملاء / AR"
+"مستحقات الموردين / AP","مستحقات الموردين / AP"
+"يوم / Days","يوم / Days"
+"أكثر من 60 يوم / 60+ Days","أكثر من 60 يوم / 60+ Days"
+"النوع / Type","النوع / Type"
+"الحساب / Account","الحساب / Account"
+"الرصيد / Balance","الرصيد / Balance"
+لا توجد تفاصيل للحسابات,لا توجد تفاصيل للحسابات
+Category,الفئة
+Metric,المؤشر
+Value,القيمة
+Remarks,ملاحظات
+صناديق,صناديق
+بنوك,بنوك
+المتأخر منها,المتأخر منها
+المستحق منها,المستحق منها
+مبيعات,مبيعات
+مشتريات,مشتريات
+النوع / Type,النوع / Type
+الرصيد / Balance,الرصيد / Balance
+الحساب / Account,الحساب / Account
+أكثر من 60 يوم / 60+ Days,أكثر من 60 يوم / 60+ Days
+يوم / Days,يوم / Days
+مستحقات الموردين / AP,مستحقات الموردين / AP
+مستحقات العملاء / AR,مستحقات العملاء / AR
+العمر / Age,العمر / Age
+تحليل أعمار الديون والالتزامات / AR & AP Aging,تحليل أعمار الديون والالتزامات / AR & AP Aging
+صافي التزام الضريبة / Net VAT Liability,صافي الالتزام الضريبي / Net VAT Liability
+ضريبة مشتريات مستردة (مدخل) / VAT Paid,ضريبة مشتريات مستردة (مدخل) / VAT Paid
+ضريبة مبيعات محصلة (مخرج) / VAT Collected,ضريبة مبيعات محصلة (مخرج) / VAT Collected
+إقرار ضريبة القيمة المضافة التقريبي / VAT Estimate,إقرار ضريبة القيمة المضافة التقريبي / VAT Estimate
+الضرائب وأعمار المديونيات / Tax & Aging Analysis,الضرائب وأعمار المديونيات / Tax & Aging Analysis
+تفاصيل أرصدة الصناديق والبنوك / Cash & Bank Accounts,تفاصيل أرصدة الصناديق والبنوك / Cash & Bank Accounts
+صافي الربح التشغيلي / Operating Profit,صافي الربح التشغيلي / Operating Profit
+التزامات الموردين / Total Payables,التزامات الموردين / Total Payables
+مستحقات العملاء / Total Receivables,مستحقات العملاء / Total Receivables
+السيولة المتوفرة / Total Liquidity,السيولة المتوفرة / Total Liquidity
+Net Profit,صافي الأرباح
