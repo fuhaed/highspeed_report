@@ -105,84 +105,65 @@ frappe.query_reports["Tax Declaration Report"] = {
         }
     ],
     "formatter": function(value, row, column, data, default_formatter) {
+        if (column.fieldname === "description" && value) {
+            if (value.startsWith("---")) {
+                var clean_val = value.replace(/---/g, '').trim();
+                return '<span style="font-weight: bold; font-size: 1.15em; color: #2c3e50; background-color: #f1f5f9; padding: 6px 12px; display: block; border-radius: 4px; border-inline-start: 4px solid #475569;">' + 
+                        __(clean_val) + 
+                       '</span>';
+            }
+            return __(value);
+        }
+
         // Apply thousand separators to currency columns
         if (column.fieldtype === "Currency" && value !== null && value !== undefined && value !== "") {
-            // Format numeric values with thousand separators
             var formatted_value = format_currency(value, column.options);
             
-            // تخصيص التنسيق للصفوف الهامة مع الحفاظ على التنسيق المالي
             if (data) {
-                // التعرف على عناوين الأقسام
                 if (data.description && data.description.startsWith("---")) {
-                    return '<span style="font-weight: bold; font-size: 1.2em; color: #34495e; background-color: #f8f9fa; padding: 5px 10px; display: block; border-radius: 3px;">' + 
-                            data.description.replace(/---/g, '') + 
-                           '</span>';
+                    return "";
                 }
                 
-                // تنسيق خاص للمجاميع والعناوين الرئيسية
-                if (data.description && (
-                    data.description.includes("اجمالي") || 
-                    data.description.includes("صافي") || 
-                    data.description.includes("الفرق الضريبي")
-                )) {
-                    return '<span style="font-weight: bold; font-size: 1.1em; color: #2c3e50;">' + formatted_value + '</span>';
+                var desc = data.description;
+                var translated_desc = __(desc);
+                
+                var is_total_row = desc.includes("Total") || desc.includes("Net") || 
+                                   desc.includes("اجمالي") || desc.includes("صافي") || 
+                                   desc.includes("الفرق") || desc.includes("الضريبة المستحقة") ||
+                                   translated_desc.includes("اجمالي") || translated_desc.includes("صافي") || 
+                                   translated_desc.includes("الفرق") || translated_desc.includes("الضريبة المستحقة");
+                                   
+                if (is_total_row) {
+                    return '<span style="font-weight: bold; font-size: 1.1em; color: #1e293b;">' + formatted_value + '</span>';
                 }
                 
-                // إبراز المبيعات الخاضعة والغير خاضعة
-                if (data.description && data.description.includes("المبيعات الخاضعة")) {
-                    return '<span style="color: #27ae60; font-weight: bold;">' + formatted_value + '</span>';
-                }
-
-                if (data.description && data.description.includes("المبيعات غير الخاضعة")) {
-                    return '<span style="color: #3498db; font-weight: bold;">' + formatted_value + '</span>';
-                }
-                
-                // إبراز المشتريات الخاضعة والغير خاضعة
-                if (data.description && data.description.includes("المشتريات الخاضعة")) {
-                    return '<span style="color: #2980b9; font-weight: bold;">' + formatted_value + '</span>';
-                }
-
-                if (data.description && data.description.includes("المشتريات غير الخاضعة")) {
-                    return '<span style="color: #3498db; font-weight: bold;">' + formatted_value + '</span>';
-                }
-                
-                // إبراز صفوف المرتجعات
-                if (data.description && data.description.includes("مرتجعات")) {
-                    return '<span style="color: #e74c3c; font-weight: bold;">' + formatted_value + '</span>';
-                }
-                
-                // إبراز صفوف إجمالي المرتجعات
-                if (data.description && (data.description === __("Total Sales Returns") || data.description === __("Total Purchase Returns"))) {
-                    return '<span style="color: #e74c3c; font-weight: bold; font-size: 1.05em;">' + formatted_value + '</span>';
-                }
-                
-                // تنسيق خاص لضريبة المصروفات
-                if (data.description && data.description.includes("المصروفات")) {
-                    return '<span style="color: #8e44ad; font-weight: bold;">' + formatted_value + '</span>';
-                }
-                
-                // تنسيق قيم الضرائب
-                if (column.fieldname === "tax_amount") {
-                    if (data.description === __("Total VAT Due for Current Tax Period")) {
-                        var tax_value = parseFloat(value || 0);
-                        return tax_value < 0 ? 
-                            '<span style="color: #e74c3c; font-weight: bold; font-size: 1.2em;">' + formatted_value + '</span>' : 
-                            '<span style="color: #27ae60; font-weight: bold; font-size: 1.2em;">' + formatted_value + '</span>';
-                    } else if (data.description === __("Expenses (Journal Entries)")) {
-                        return '<span style="color: #8e44ad; font-weight: bold;">' + formatted_value + '</span>';
-                    } else if (data.description === __("Expenses (Payment Entries)")) {
-                        return '<span style="color: #8e44ad; font-weight: bold;">' + formatted_value + '</span>';
-                    } else {
-                        return '<span style="color: #2980b9;">' + formatted_value + '</span>';
+                if (desc.includes("Taxable Sales") || translated_desc.includes("المبيعات الخاضعة")) {
+                    if (column.fieldname === "tax_amount") {
+                        return '<span style="color: #27ae60; font-weight: bold;">' + formatted_value + '</span>';
                     }
                 }
                 
-                // تلوين صف الضريبة المستحقة بالكامل
-                if (data.description === __("Total VAT Due for Current Tax Period")) {
-                    return '<span style="font-weight: bold; font-size: 1.1em; color: #34495e;">' + formatted_value + '</span>';
+                if (desc.includes("Taxable Purchases") || translated_desc.includes("المشتريات الخاضعة")) {
+                    if (column.fieldname === "tax_amount") {
+                        return '<span style="color: #2980b9; font-weight: bold;">' + formatted_value + '</span>';
+                    }
+                }
+                
+                if (desc.includes("Returns") || translated_desc.includes("مرتجع") || translated_desc.includes("المرتجعات")) {
+                    return '<span style="color: #e74c3c; font-weight: bold;">' + formatted_value + '</span>';
+                }
+                
+                if (desc.includes("Expenses") || translated_desc.includes("المصروفات")) {
+                    return '<span style="color: #8e44ad; font-weight: bold;">' + formatted_value + '</span>';
+                }
+                
+                if (desc.includes("VAT Due") || translated_desc.includes("الضريبة المستحقة") || translated_desc.includes("الفرق الضريبي")) {
+                    var tax_val = parseFloat(value || 0);
+                    return tax_val < 0 ? 
+                        '<span style="color: #e74c3c; font-weight: bold; font-size: 1.15em;">' + formatted_value + '</span>' : 
+                        '<span style="color: #27ae60; font-weight: bold; font-size: 1.15em;">' + formatted_value + '</span>';
                 }
             }
-            
             return formatted_value;
         }
         
@@ -259,11 +240,22 @@ frappe.query_reports["Tax Declaration Report"] = {
             report.page.wrapper.find(".report-summary").hide();
             
             // إزالة الأقسام السابقة إذا وجدت
-            report.page.main.find(".tax-summary-section").remove();
+            report.page.wrapper.find(".tax-summary-section").remove();
             
             // إنشاء قسم ملخص الضرائب في الأعلى
             var $taxSummarySection = $('<div class="tax-summary-section"></div>');
-            report.page.main.find(".report-filter-section").after($taxSummarySection);
+            
+            // البحث عن مكان إدخال الملخص بشكل مرن
+            var $anchor = report.page.wrapper.find(".page-form");
+            if (!$anchor.length) {
+                $anchor = report.page.wrapper.find(".report-summary");
+            }
+            
+            if ($anchor.length) {
+                $anchor.after($taxSummarySection);
+            } else {
+                report.page.wrapper.find(".report-wrapper").before($taxSummarySection);
+            }
             
             // تحديث الملخص
             updateTaxSummary(report.data);
@@ -284,28 +276,33 @@ frappe.query_reports["Tax Declaration Report"] = {
                 
                 // إضافة تلوين للصفوف حسب نوعها
                 if (rowData && rowData.description) {
-                    if (rowData.description.includes("اجمالي") || rowData.description.includes("صافي") || 
-                        rowData.description.includes("Total") || rowData.description.includes("Net")) {
+                    var desc = rowData.description;
+                    var trans = __(desc);
+                    
+                    if (desc.includes("اجمالي") || desc.includes("صافي") || 
+                        desc.includes("Total") || desc.includes("Net") ||
+                        trans.includes("اجمالي") || trans.includes("صافي")) {
                         $row.css({
                             "background-color": "#f8fafc",
                             "font-weight": "bold"
                         });
                     }
                     
-                    if (rowData.description.includes("مرتجعات") || rowData.description.includes("Returns")) {
+                    if (desc.includes("مرتجعات") || desc.includes("Returns") || trans.includes("مرتجع") || trans.includes("مرتجعات")) {
                         $row.css({
                             "background-color": "#fff5f5"
                         });
                     }
                     
-                    if (rowData.description.includes("المصروفات") || rowData.description.includes("Expenses")) {
+                    if (desc.includes("المصروفات") || desc.includes("Expenses") || trans.includes("المصروفات")) {
                         $row.css({
                             "background-color": "#f9f4fc"
                         });
                     }
                     
-                    if (rowData.description === __("Total VAT Due for Current Tax Period") || 
-                        rowData.description === "Total VAT Due for Current Tax Period") {
+                    if (desc === __("Total VAT Due for Current Tax Period") || 
+                        desc === "Total VAT Due for Current Tax Period" ||
+                        trans === __("Total VAT Due for Current Tax Period")) {
                         $row.css({
                             "background-color": "#f1f5f9",
                             "font-weight": "bold",
@@ -314,7 +311,7 @@ frappe.query_reports["Tax Declaration Report"] = {
                         });
                     }
                     
-                    if (rowData.description.includes("غير الخاضعة") || rowData.description.includes("Non-Taxable")) {
+                    if (desc.includes("غير الخاضعة") || desc.includes("Non-Taxable") || trans.includes("غير الخاضعة")) {
                         $row.css({
                             "background-color": "#f0f8ff"
                         });
@@ -870,31 +867,62 @@ function updateTaxSummary(data) {
         `);
     }
 
-    // دالة مرنة للبحث عن الصفوف تدعم اللغتين العربية والإنجليزية
-    var findRow = function(eng_desc) {
+    // دالة مرنة للبحث عن الصفوف تدعم اللغتين العربية والإنجليزية والمطابقة الجزئية
+    var findRow = function(eng_desc, ar_desc) {
         if (!data) return null;
         var translated = __(eng_desc);
-        return data.find(row => row.description === eng_desc || row.description === translated);
+        
+        // 1. مطابقة دقيقة أولاً
+        var match = data.find(row => {
+            if (!row || !row.description) return false;
+            var desc = row.description.trim();
+            return desc === eng_desc || 
+                   desc === translated || 
+                   (ar_desc && desc === ar_desc.trim());
+        });
+        
+        if (match) return match;
+        
+        // 2. مطابقة بالكلمات المفتاحية كخيار بديل في حالة حدوث أي اختلاف في الترجمة
+        var eng_words = eng_desc.toLowerCase();
+        
+        return data.find(row => {
+            if (!row || !row.description) return false;
+            var desc = row.description.toLowerCase();
+            
+            if (eng_words.includes("journal") && (desc.includes("journal") || desc.includes("القيود"))) return true;
+            if (eng_words.includes("payment") && (desc.includes("payment") || desc.includes("سندات"))) return true;
+            if (eng_words.includes("sales returns") && (desc.includes("sales returns") || (desc.includes("مرتجع") && desc.includes("مبيعات")))) return true;
+            if (eng_words.includes("purchase returns") && (desc.includes("purchase returns") || (desc.includes("مرتجع") && desc.includes("مشتريات")))) return true;
+            if (eng_words.includes("net sales") && (desc.includes("net sales") || (desc.includes("صافي") && desc.includes("مبيعات")))) return true;
+            if (eng_words.includes("net purchases") && (desc.includes("net purchases") || (desc.includes("صافي") && desc.includes("مشتريات")))) return true;
+            if (eng_words.includes("taxable sales") && (desc.includes("taxable sales") || (desc.includes("الخاضعة") && desc.includes("مبيعات")))) return true;
+            if (eng_words.includes("taxable purchases") && (desc.includes("taxable purchases") || (desc.includes("الخاضعة") && desc.includes("مشتريات")))) return true;
+            if (eng_words.includes("vat due") && (desc.includes("vat due") || desc.includes("الفرق") || desc.includes("المستحقة"))) return true;
+            if (eng_words.includes("recoverable") && (desc.includes("recoverable") || desc.includes("المستردة"))) return true;
+            
+            return false;
+        });
     };
     
     // الحصول على بيانات الصفوف المهمة
-    var taxableSales = findRow("Standard Rate Taxable Sales");
-    var nonTaxableSales = findRow("Non-Taxable or Zero-Rated Sales");
-    var totalSales = findRow("Total Sales");
-    var salesReturns = findRow("Standard Rate Taxable Sales Returns");
-    var salesNet = findRow("Net Sales (After Returns)");
+    var taxableSales = findRow("Standard Rate Taxable Sales", "المبيعات الخاضعة للنسبة الأساسية");
+    var nonTaxableSales = findRow("Non-Taxable or Zero-Rated Sales", "المبيعات غير الخاضعة أو الضريبة الصفرية");
+    var totalSales = findRow("Total Sales", "اجمالي المبيعات");
+    var salesReturns = findRow("Standard Rate Taxable Sales Returns", "مرتجعات المبيعات الخاضعة للنسبة الأساسية");
+    var salesNet = findRow("Net Sales (After Returns)", "صافي المبيعات (بعد خصم المرتجعات)");
     
-    var taxablePurchases = findRow("Standard Rate Taxable Purchases");
-    var nonTaxablePurchases = findRow("Non-Taxable or Zero-Rated Purchases");
-    var totalPurchases = findRow("Total Purchases");
-    var purchaseReturns = findRow("Standard Rate Taxable Purchase Returns");
-    var purchaseNet = findRow("Net Purchases (After Returns)");
+    var taxablePurchases = findRow("Standard Rate Taxable Purchases", "المشتريات الخاضعة للنسبة الأساسية");
+    var nonTaxablePurchases = findRow("Non-Taxable or Zero-Rated Purchases", "المشتريات غير الخاضعة أو الضريبة الصفرية");
+    var totalPurchases = findRow("Total Purchases", "اجمالي المشتريات");
+    var purchaseReturns = findRow("Standard Rate Taxable Purchase Returns", "مرتجعات المشتريات الخاضعة للنسبة الأساسية");
+    var purchaseNet = findRow("Net Purchases (After Returns)", "صافي المشتريات (بعد خصم المرتجعات)");
     
-    var journalEntries = findRow("Expenses (Journal Entries)");
-    var paymentEntries = findRow("Expenses (Payment Entries)");
-    var totalRecoverable = findRow("Total Recoverable Tax (Purchases and Expenses)");
+    var journalEntries = findRow("Expenses (Journal Entries)", "المصروفات (القيود اليومية)");
+    var paymentEntries = findRow("Expenses (Payment Entries)", "المصروفات (سندات الصرف)");
+    var totalRecoverable = findRow("Total Recoverable Tax (Purchases and Expenses)", "اجمالي الضريبة المستردة (المشتريات والمصروفات)");
     
-    var vatDue = findRow("Total VAT Due for Current Tax Period");
+    var vatDue = findRow("Total VAT Due for Current Tax Period", "اجمالي ضريبة القيمة المضافة المستحقة عن الفترة الضريبية الحالية");
     
     var currency = frappe.defaults.get_default("currency") || "SAR";
     
