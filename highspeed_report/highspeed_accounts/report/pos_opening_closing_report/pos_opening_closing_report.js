@@ -60,6 +60,28 @@ frappe.query_reports["POS Opening Closing Report"] = {
     ],
     
     "formatter": function(value, row, column, data, default_formatter) {
+        if (column.fieldname === "difference") {
+            const diff = parseFloat(data.difference) || 0;
+            let val = default_formatter(value, row, column, data);
+            if (diff < 0) {
+                return `<span style="color: #e74c3c; font-weight: bold;">${val}</span>`;
+            } else if (diff > 0) {
+                return `<span style="color: #27ae60; font-weight: bold;">${val}</span>`;
+            }
+            return val;
+        }
+
+        if (column.fieldname === "difference_percentage") {
+            const percent = parseFloat(data.difference_percentage) || 0;
+            let val = default_formatter(value, row, column, data);
+            if (percent < -5) {
+                return `<span style="color: #e74c3c; font-weight: bold;">${val}</span>`;
+            } else if (percent > 5) {
+                return `<span style="color: #e67e22; font-weight: bold;">${val}</span>`;
+            }
+            return val;
+        }
+
         if (!data || !value) {
             if (column.fieldname === "net_total" || column.fieldname === "total_taxes" || column.fieldname === "grand_total") {
                 return '<span style="color: #888;">0.00</span>';
@@ -74,20 +96,29 @@ frappe.query_reports["POS Opening Closing Report"] = {
             
             switch(value) {
                 case "مفتوح":
+                case "Open":
                     color = "green";
                     bg_color = "#e8f5e8";
                     break;
                 case "مغلق":
+                case "Closed":
                     color = "blue";
                     bg_color = "#e8f0ff";
                     break;
                 case "مسودة":
+                case "Draft":
                     color = "orange";
                     bg_color = "#fff3e0";
                     break;
                 case "ملغي":
+                case "Cancelled":
                     color = "red";
                     bg_color = "#ffebee";
+                    break;
+                case "مرحل":
+                case "Submitted":
+                    color = "green";
+                    bg_color = "#e8f5e8";
                     break;
             }
             
@@ -140,7 +171,12 @@ frappe.query_reports["POS Opening Closing Report"] = {
         
         // إضافة زر طباعة منسقة للتقرير
         report.page.add_inner_button(__("Print Report"), function() {
-            print_pos_opening_closing_report(report);
+            const is_custom = report.columns.some(col => col.fieldname === "opening_shift");
+            if (is_custom) {
+                print_custom_report(report);
+            } else {
+                print_pos_opening_closing_report(report);
+            }
         });
         
         // إضافة زر لفتح جلسة نقطة بيع جديدة
@@ -405,15 +441,376 @@ function print_pos_opening_closing_report(report) {
     }
 }
 
+// وظيفة طباعة التقرير المخصص (POSAwesome Layout)
+function print_custom_report(report) {
+    const data = frappe.query_report.data || [];
+    const columns = frappe.query_report.columns || [];
+    const filters = report.get_values();
+    const company = filters.company || frappe.defaults.get_user_default("company");
+    const from_date = filters.from_date;
+    const to_date = filters.to_date;
+    const show_details = filters.show_payment_details;
+
+    let html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>${__("POS Opening Closing Report")}</title>
+            <style>
+                @page {
+                    size: A4 landscape;
+                    margin: 10mm;
+                }
+                
+                body {
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+                    margin: 0;
+                    padding: 20px;
+                    color: #2c3e50;
+                    background: #fff;
+                    direction: rtl;
+                }
+                
+                .header {
+                    text-align: center;
+                    margin-bottom: 30px;
+                    border-bottom: 3px solid #3498db;
+                    padding-bottom: 20px;
+                }
+                
+                .header h1 {
+                    margin: 0;
+                    color: #2c3e50;
+                    font-size: 28px;
+                    font-weight: 600;
+                }
+                
+                .header h2 {
+                    margin: 10px 0 0 0;
+                    color: #3498db;
+                    font-size: 20px;
+                    font-weight: 400;
+                }
+                
+                .info-section {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 20px;
+                    padding: 15px;
+                    background: #f8f9fa;
+                    border-radius: 8px;
+                }
+                
+                .info-item {
+                    display: flex;
+                    align-items: center;
+                }
+                
+                .info-label {
+                    font-weight: 600;
+                    color: #7f8c8d;
+                    margin-left: 10px;
+                }
+                
+                .info-value {
+                    color: #2c3e50;
+                    font-weight: 500;
+                }
+                
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    border-radius: 8px;
+                    overflow: hidden;
+                }
+                
+                thead {
+                    background: linear-gradient(135deg, #3498db, #2980b9);
+                    color: white;
+                }
+                
+                th {
+                    padding: 12px 8px;
+                    text-align: center;
+                    font-weight: 600;
+                    font-size: 12px;
+                    letter-spacing: 0.5px;
+                    border-left: 1px solid rgba(255,255,255,0.2);
+                }
+                
+                th:last-child {
+                    border-left: none;
+                }
+                
+                td {
+                    padding: 10px 8px;
+                    text-align: center;
+                    font-size: 11px;
+                    border-bottom: 1px solid #ecf0f1;
+                }
+                
+                tbody tr:nth-child(even) {
+                    background-color: #f8f9fa;
+                }
+                
+                tbody tr:hover {
+                    background-color: #e8f4f8;
+                    transition: background-color 0.2s;
+                }
+                
+                .total-row {
+                    background: linear-gradient(135deg, #34495e, #2c3e50) !important;
+                    color: white;
+                    font-weight: 700;
+                    font-size: 13px;
+                }
+                
+                .total-row td {
+                    border-bottom: none;
+                    padding: 15px 8px;
+                }
+                
+                .negative {
+                    color: #e74c3c;
+                    font-weight: 600;
+                }
+                
+                .positive {
+                    color: #27ae60;
+                    font-weight: 600;
+                }
+                
+                .status-submitted {
+                    background: #27ae60;
+                    color: white;
+                    padding: 3px 10px;
+                    border-radius: 12px;
+                    font-size: 10px;
+                    font-weight: 500;
+                    display: inline-block;
+                }
+                
+                .status-draft {
+                    background: #f39c12;
+                    color: white;
+                    padding: 3px 10px;
+                    border-radius: 12px;
+                    font-size: 10px;
+                    font-weight: 500;
+                    display: inline-block;
+                }
+                
+                .summary {
+                    margin-top: 30px;
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 15px;
+                }
+                
+                .summary-card {
+                    background: #fff;
+                    border: 2px solid #ecf0f1;
+                    border-radius: 8px;
+                    padding: 20px;
+                    text-align: center;
+                    transition: all 0.3s;
+                }
+                
+                .summary-card:hover {
+                    border-color: #3498db;
+                    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.1);
+                }
+                
+                .summary-label {
+                    color: #7f8c8d;
+                    font-size: 12px;
+                    font-weight: 500;
+                    margin-bottom: 8px;
+                }
+                
+                .summary-value {
+                    color: #2c3e50;
+                    font-size: 20px;
+                    font-weight: 700;
+                }
+                
+                .footer {
+                    margin-top: 40px;
+                    text-align: center;
+                    color: #7f8c8d;
+                    font-size: 11px;
+                    border-top: 1px solid #ecf0f1;
+                    padding-top: 20px;
+                }
+                
+                @media print {
+                    body {
+                        padding: 0;
+                    }
+                    
+                    .no-print {
+                        display: none;
+                    }
+                    
+                    table {
+                        box-shadow: none;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>${company}</h1>
+                <h2>${__("POS Opening Closing Report")}</h2>
+            </div>
+            
+            <div class="info-section">
+                <div class="info-item">
+                    <span class="info-label">${__("Period")}:</span>
+                    <span class="info-value">${frappe.datetime.str_to_user(from_date)} - ${frappe.datetime.str_to_user(to_date)}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">${__("Print Date")}:</span>
+                    <span class="info-value">${frappe.datetime.now_datetime()}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">${__("Printed By")}:</span>
+                    <span class="info-value">${frappe.session.user_fullname}</span>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>`;
+
+    columns.forEach(col => {
+        if (!show_details && col.fieldname === "mode_of_payment") return;
+        html += `<th>${col.label}</th>`;
+    });
+
+    html += `</tr></thead><tbody>`;
+
+    data.forEach(row => {
+        const is_total = row.is_total_row;
+        html += `<tr${is_total ? ' class="total-row"' : ''}>`;
+        
+        columns.forEach(col => {
+            if (!show_details && col.fieldname === "mode_of_payment") return;
+            
+            let val = row[col.fieldname];
+            let formatted_val = val || "";
+            
+            if (col.fieldtype === "Currency" && val !== null && val !== undefined) {
+                formatted_val = formatCurrency(val);
+            } else if (col.fieldtype === "Percent" && val !== null && val !== undefined) {
+                formatted_val = val.toFixed(2) + "%";
+            } else if (col.fieldtype === "Datetime" && val) {
+                formatted_val = frappe.datetime.str_to_user(val);
+            }
+            
+            if (col.fieldname === "difference" && val) {
+                const diff = parseFloat(val);
+                if (diff < 0) {
+                    formatted_val = `<span class="negative">${formatted_val}</span>`;
+                } else if (diff > 0) {
+                    formatted_val = `<span class="positive">${formatted_val}</span>`;
+                }
+            }
+            
+            if (col.fieldname === "status" && val) {
+                if (val === "Submitted" || val === __("Submitted")) {
+                    formatted_val = `<span class="status-submitted">${val}</span>`;
+                } else {
+                    formatted_val = `<span class="status-draft">${val}</span>`;
+                }
+            }
+            
+            html += `<td>${formatted_val}</td>`;
+        });
+        
+        html += `</tr>`;
+    });
+
+    html += `</tbody></table>`;
+
+    // Always show summary totals
+    let total_row = data.find(r => r.is_total_row);
+    
+    // If no total row exists, calculate it
+    if (!total_row && data.length > 0) {
+        total_row = {
+            opening_amount: 0,
+            sales_amount: 0,
+            expected_amount: 0,
+            closing_amount: 0,
+            difference: 0
+        };
+        
+        data.forEach(row => {
+            if (!row.is_total_row) {
+                total_row.opening_amount += parseFloat(row.opening_amount) || 0;
+                total_row.sales_amount += parseFloat(row.sales_amount) || 0;
+                total_row.expected_amount += parseFloat(row.expected_amount) || 0;
+                total_row.closing_amount += parseFloat(row.closing_amount) || 0;
+                total_row.difference += parseFloat(row.difference) || 0;
+            }
+        });
+    }
+    
+    if (total_row) {
+        html += `
+            <div class="summary">
+                <div class="summary-card">
+                    <div class="summary-label">${__("Total Opening")}</div>
+                    <div class="summary-value">${formatCurrency(total_row.opening_amount)}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">${__("Total Sales")}</div>
+                    <div class="summary-value">${formatCurrency(total_row.sales_amount)}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">${__("Total Expected")}</div>
+                    <div class="summary-value">${formatCurrency(total_row.expected_amount)}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">${__("Total Closing")}</div>
+                    <div class="summary-value">${formatCurrency(total_row.closing_amount)}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">${__("Total Difference")}</div>
+                    <div class="summary-value ${total_row.difference < 0 ? 'negative' : 'positive'}">${formatCurrency(total_row.difference)}</div>
+                </div>
+            </div>`;
+    }
+
+    html += `
+            <div class="footer">
+                <p>${company} - ${__("HIGH SPEED IT REPORT")}</p>
+            </div>
+        </body>
+        </html>`;
+
+    const printWindow = window.open("", "_blank");
+    printWindow.document.write(html);
+    printWindow.document.close();
+    printWindow.focus();
+    
+    setTimeout(() => {
+        printWindow.print();
+    }, 250);
+}
+
 // وظيفة تصدير Excel
 function export_pos_report_to_excel(report) {
     if (!report || !report.data || !report.data.length) {
         frappe.msgprint(__("لا توجد بيانات للتصدير"));
         return;
     }
-    
-    // استخدام وظيفة التصدير المدمجة في Frappe
-    frappe.tools.downloadify(report.data, ["name", "period_start_date", "period_end_date", "pos_profile", "user", "status", "total_quantity", "net_total", "total_taxes", "grand_total"], "POS Opening Closing Report");
+    const fields = report.columns.map(c => c.fieldname);
+    frappe.tools.downloadify(report.data, fields, "POS Opening Closing Report");
 }
 
 // وظيفة مساعدة لتنسيق القيم النقدية
