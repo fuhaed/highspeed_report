@@ -10,6 +10,15 @@ def execute(filters=None):
     """Main execution function for the report"""
     if not filters:
         filters = {}
+        
+    # Redirect to custom shift report if standard POS Opening Entry is empty/missing
+    # but posawesome / highspeed_pos shifts are active.
+    has_standard = frappe.db.exists("DocType", "POS Opening Entry") and frappe.db.count("POS Opening Entry") > 0
+    has_custom = frappe.db.exists("DocType", "POS Opening Shift") or frappe.db.exists("DocType", "HSPOS Opening Shift")
+    
+    if not has_standard and has_custom:
+        from highspeed_report.highspeed_accounts.report.posawesome_opening_closing_report.posawesome_opening_closing_report import execute as execute_custom
+        return execute_custom(filters)
     
     # Set default date range if not provided
     if not filters.get("from_date"):

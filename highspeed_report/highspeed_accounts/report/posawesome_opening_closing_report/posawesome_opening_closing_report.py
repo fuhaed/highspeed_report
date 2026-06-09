@@ -53,20 +53,40 @@ def execute(filters=None):
     return columns, data, None, None, report_summary
 
 
+def get_doctype_names():
+    doctype_opening = "POS Opening Shift"
+    doctype_closing = "POS Closing Shift"
+    doctype_opening_detail = "POS Opening Shift Detail"
+    doctype_closing_detail = "POS Closing Shift Detail"
+    fk_opening_shift = "pos_opening_shift"
+    
+    # Fallback to highspeed_pos doctypes if posawesome is not installed
+    if not frappe.db.exists("DocType", doctype_opening) and frappe.db.exists("DocType", "HSPOS Opening Shift"):
+        doctype_opening = "HSPOS Opening Shift"
+        doctype_closing = "HSPOS Closing Shift"
+        doctype_opening_detail = "HSPOS Opening Shift Detail"
+        doctype_closing_detail = "HSPOS Closing Shift Detail"
+        fk_opening_shift = "hspos_opening_shift"
+        
+    return doctype_opening, doctype_closing, doctype_opening_detail, doctype_closing_detail, fk_opening_shift
+
+
 def get_columns(filters):
+    doctype_opening, doctype_closing, _, _, _ = get_doctype_names()
+    
     columns = [
         {
             "label": _("Opening Shift"),
             "fieldname": "opening_shift",
             "fieldtype": "Link",
-            "options": "POS Opening Shift",
+            "options": doctype_opening,
             "width": 180
         },
         {
             "label": _("Closing Shift"),
             "fieldname": "closing_shift",
             "fieldtype": "Link",
-            "options": "POS Closing Shift",
+            "options": doctype_closing,
             "width": 180
         },
         {
@@ -164,6 +184,8 @@ def get_data(filters):
     user_filter = filters.pop("user", None)
     company = filters.get("company", frappe.defaults.get_user_default("company"))
 
+    doctype_opening, doctype_closing, doctype_opening_detail, doctype_closing_detail, fk_opening_shift = get_doctype_names()
+
     if from_date:
         from_date = get_datetime(from_date)
     if to_date:
@@ -181,10 +203,10 @@ def get_data(filters):
         closing_filters["company"] = company
 
     closing_shifts = frappe.get_all(
-        "POS Closing Shift",
+        doctype_closing,
         filters=closing_filters,
         fields=[
-            "name", "pos_opening_shift", "period_start_date", 
+            "name", fk_opening_shift, "period_start_date", 
             "period_end_date", "user", "pos_profile", "docstatus",
             "posting_date", "company"
         ]
@@ -203,7 +225,9 @@ def get_data(filters):
     processed_shifts = set()
 
     for closing in closing_shifts:
-        opening_name = closing.pos_opening_shift
+        opening_name = closing.get(fk_opening_shift)
+        if not opening_name:
+            continue
         
         # Skip if already processed (in case of duplicates)
         shift_key = f"{opening_name}-{closing.name}"
@@ -212,7 +236,7 @@ def get_data(filters):
         processed_shifts.add(shift_key)
         
         opening_data = frappe.db.get_value(
-            "POS Opening Shift", 
+            doctype_opening, 
             opening_name, 
             ["period_start_date", "user"],
             as_dict=True
@@ -223,14 +247,14 @@ def get_data(filters):
 
         if show_payment_details:
             opening_details = frappe.get_all(
-                "POS Opening Shift Detail",
+                doctype_opening_detail,
                 filters={"parent": opening_name},
                 fields=["mode_of_payment", "amount"]
             )
             opening_map = {d.mode_of_payment: flt(d.amount) for d in opening_details}
 
             closing_details = frappe.get_all(
-                "POS Closing Shift Detail",
+                doctype_closing_detail,
                 filters={"parent": closing.name},
                 fields=[
                     "mode_of_payment", "expected_amount", 
@@ -238,7 +262,7 @@ def get_data(filters):
                 ]
             )
             
-            sales_by_mode = get_sales_by_mode(opening_name, closing.name)
+            sales_by_mode = get_sales_by_mode(opening_name, closing.name, doctype_opening_detail, doctype_closing_detail)
             
             closing_map = {d.mode_of_payment: d for d in closing_details}
 
@@ -269,22 +293,22 @@ def get_data(filters):
                 }
                 rows.append(row)
         else:
-            closing_totals = frappe.db.sql("""
+            closing_totals = frappe.db.sql(f"""
                 SELECT 
                     SUM(expected_amount) as expected_amount,
                     SUM(closing_amount) as closing_amount,
                     SUM(difference) as difference
-                FROM `tabPOS Closing Shift Detail`
+                FROM `tab{doctype_closing_detail}`
                 WHERE parent = %s
             """, closing.name, as_dict=True)[0]
             
-            opening_total = frappe.db.sql("""
+            opening_total = frappe.db.sql(f"""
                 SELECT SUM(amount) as amount
-                FROM `tabPOS Opening Shift Detail`
+                FROM `tab{doctype_opening_detail}`
                 WHERE parent = %s
             """, opening_name, as_dict=True)[0]
             
-            total_sales = get_total_sales(opening_name, closing.name)
+            total_sales = get_total_sales(opening_name, closing.name, doctype_opening_detail, doctype_closing_detail, doctype_closing)
             
             expected_amt = flt(closing_totals.expected_amount)
             closing_amt = flt(closing_totals.closing_amount)
@@ -351,10 +375,10 @@ def get_data(filters):
     return rows
 
 
-def get_sales_by_mode(opening_shift, closing_shift):
+def get_sales_by_mode(opening_shift, closing_shift, doctype_opening_detail="POS Opening Shift Detail", doctype_closing_detail="POS Closing Shift Detail"):
     # Get from POS Closing Shift Payment details
     payment_details = frappe.get_all(
-        "POS Closing Shift Detail",
+        doctype_closing_detail,
         filters={"parent": closing_shift},
         fields=["mode_of_payment", "expected_amount"]
     )
@@ -362,7 +386,7 @@ def get_sales_by_mode(opening_shift, closing_shift):
     if payment_details:
         # Get opening amounts
         opening_details = frappe.get_all(
-            "POS Opening Shift Detail",
+            doctype_opening_detail,
             filters={"parent": opening_shift},
             fields=["mode_of_payment", "amount"]
         )
@@ -381,10 +405,10 @@ def get_sales_by_mode(opening_shift, closing_shift):
     return {}
 
 
-def get_total_sales(opening_shift, closing_shift):
+def get_total_sales(opening_shift, closing_shift, doctype_opening_detail="POS Opening Shift Detail", doctype_closing_detail="POS Closing Shift Detail", doctype_closing="POS Closing Shift"):
     # Get sales from POS Closing Shift directly
     closing_data = frappe.db.get_value(
-        "POS Closing Shift",
+        doctype_closing,
         closing_shift,
         ["grand_total", "net_total"],
         as_dict=True
@@ -394,15 +418,15 @@ def get_total_sales(opening_shift, closing_shift):
         return flt(closing_data.grand_total)
     
     # If no grand_total in closing shift, calculate from expected amounts
-    expected_total = frappe.db.sql("""
+    expected_total = frappe.db.sql(f"""
         SELECT SUM(expected_amount) as total
-        FROM `tabPOS Closing Shift Detail`
+        FROM `tab{doctype_closing_detail}`
         WHERE parent = %s
     """, closing_shift)
     
-    opening_total = frappe.db.sql("""
+    opening_total = frappe.db.sql(f"""
         SELECT SUM(amount) as total
-        FROM `tabPOS Opening Shift Detail`
+        FROM `tab{doctype_opening_detail}`
         WHERE parent = %s
     """, opening_shift)
     

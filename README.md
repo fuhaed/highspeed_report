@@ -20,7 +20,6 @@ An advanced and feature-rich ERPNext reporting extension designed for High Speed
 *   **Customer & Supplier Statements:** Professional-grade statements for tracking balances, payments, and outstanding invoices.
 *   **Sales Invoice Payment Breakdown:** Insightful details on payment modes (Cash, Card, Online, Credit) per sales invoice.
 *   **Simple & Detailed Sales Logs:** Comprehensive records of general sales registers and purchase registers.
-*   **Cash Account Statement:** Granular cash register ledger analysis.
 
 ---
 

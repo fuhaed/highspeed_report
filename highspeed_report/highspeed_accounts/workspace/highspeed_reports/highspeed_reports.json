@@ -49,18 +49,6 @@
    "dependencies": "",
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Cash Account Statement Report",
-   "link_count": 0,
-   "link_to": "Cash Account Statement Report",
-   "link_type": "Report",
-   "onboard": 1,
-   "report_ref_doctype": "GL Entry",
-   "type": "Link"
-  },
-  {
-   "dependencies": "",
-   "hidden": 0,
-   "is_query_report": 1,
    "label": "Journal Entries Report",
    "link_count": 0,
    "link_to": "Journal Entries Report",
