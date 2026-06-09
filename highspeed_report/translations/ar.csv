@@ -165,4 +165,18 @@ Items with Price,أصناف بأسعار
 Items without Price,أصناف بدون أسعار
 Print Label,طباعة ملصق
 Print Barcode Only,شريط باركود
-
+Opening Shift,جلسة الافتتاح
+Closing Shift,جلسة الإغلاق
+Total Opening,إجمالي الافتتاح
+Total Expected,إجمالي المتوقع
+Total Closing,إجمالي الإغلاق
+Total Difference,إجمالي الفارق
+Submitted,مرحل
+Draft,مسودة
+Expected Amount,المبلغ المتوقع
+Closing Amount,مبلغ الإغلاق
+Difference,الفرق
+Difference %,نسبة الفرق
+Show Payment Details,إظهار تفاصيل الدفع
+Open,مفتوح
+Closed,مغلق
