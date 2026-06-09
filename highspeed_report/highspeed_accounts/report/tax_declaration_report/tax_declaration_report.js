@@ -255,6 +255,9 @@ frappe.query_reports["Tax Declaration Report"] = {
     "after_datatable_render": function(datatable) {
         var report = frappe.query_report;
         if (report.data && report.data.length > 0) {
+            // Hide standard summary
+            report.page.wrapper.find(".report-summary").hide();
+            
             // إزالة الأقسام السابقة إذا وجدت
             report.page.main.find(".tax-summary-section").remove();
             
@@ -793,114 +796,74 @@ function updateTaxSummary(data) {
                     direction: rtl;
                     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
                 }
-                .tax-tables-grid {
+                .tax-panels-grid {
                     display: grid;
                     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
                     gap: 20px;
                     margin-bottom: 20px;
                 }
-                .tax-table-card {
+                .tax-panel-card {
                     background: #ffffff;
-                    border-radius: 12px;
-                    border: 1px solid #e2e8f0;
-                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+                    border: 1px solid #ddd;
+                    border-radius: 6px;
                     overflow: hidden;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
                     transition: transform 0.2s ease, box-shadow 0.2s ease;
                 }
-                .tax-table-card:hover {
+                .tax-panel-card:hover {
                     transform: translateY(-2px);
                     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
                 }
-                .tax-card-header {
-                    padding: 14px 20px;
+                .tax-panel-header {
                     color: white;
+                    padding: 10px;
+                    text-align: center;
                     font-weight: bold;
+                    font-size: 15px;
+                    border-bottom: 1px solid #ddd;
                 }
-                .green-header {
-                    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+                .tax-panel-body {
+                    padding: 15px;
                 }
-                .blue-header {
-                    background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
-                }
-                .tax-card-header h3 {
-                    margin: 0;
-                    font-size: 16px;
-                    font-weight: 700;
-                }
-                .tax-summary-table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin: 0;
-                }
-                .tax-summary-table th, .tax-summary-table td {
-                    padding: 12px 18px;
-                    text-align: right;
-                    border-bottom: 1px solid #f1f5f9;
-                    font-size: 13px;
-                }
-                .tax-summary-table th {
-                    background-color: #f8fafc;
-                    color: #475569;
-                    font-weight: 700;
-                    font-size: 12px;
-                    text-transform: uppercase;
-                }
-                .tax-summary-table td.num {
-                    text-align: left;
-                    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-                    font-weight: 600;
-                    font-size: 14px;
-                }
-                .tax-summary-table tr.returns-row {
-                    background-color: #fff5f5;
-                }
-                .tax-summary-table tr.total-row {
-                    background-color: #f8fafc;
-                    font-weight: bold;
-                    border-top: 2px solid #e2e8f0;
-                }
-                .tax-summary-table tr.total-row td {
-                    color: #1e293b;
-                    font-size: 14px;
-                }
-                .tax-val-green { color: #27ae60 !important; }
-                .tax-val-blue { color: #2980b9 !important; }
-                .tax-val-red { color: #e74c3c !important; }
-                .tax-val-purple { color: #8e44ad !important; }
-                .tax-settlement-section { margin-top: 20px; }
-                .tax-due-card {
-                    border-radius: 12px;
-                    padding: 24px;
+                .tax-row-item {
                     display: flex;
                     justify-content: space-between;
-                    align-items: center;
-                    border: 1px solid transparent;
-                    transition: transform 0.2s ease;
-                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                    margin-bottom: 8px;
+                    border-bottom: 1px solid #eee;
+                    padding-bottom: 8px;
+                    font-size: 13px;
                 }
-                .tax-due-card:hover { transform: scale(1.01); }
-                .tax-due-payable {
-                    background: linear-gradient(135deg, #fff5f5 0%, #fee2e2 100%);
-                    border-color: #fca5a5;
-                    border-inline-start: 6px solid #ef4444;
+                .tax-row-item:last-child {
+                    margin-bottom: 0;
+                    border-bottom: none;
+                    padding-bottom: 0;
                 }
-                .tax-due-payable .tax-due-title { color: #991b1b; font-weight: bold; font-size: 15px; }
-                .tax-due-payable .tax-due-val {
-                    color: #b91c1c;
-                    font-size: 24px;
-                    font-weight: 800;
+                .tax-row-label {
+                    font-weight: bold;
+                    text-align: right;
+                    color: #2c3e50;
+                }
+                .tax-row-value {
+                    direction: ltr;
                     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+                    font-weight: 700;
+                    font-size: 14px;
                 }
-                .tax-due-refundable {
-                    background: linear-gradient(135deg, #f0fff4 0%, #d1fae5 100%);
-                    border-color: #86efac;
-                    border-inline-start: 6px solid #10b981;
+                .tax-due-card-summary {
+                    margin-top: 20px;
+                    padding: 15px;
+                    text-align: center;
+                    border-radius: 6px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
                 }
-                .tax-due-refundable .tax-due-title { color: #065f46; font-weight: bold; font-size: 15px; }
-                .tax-due-refundable .tax-due-val {
-                    color: #047857;
-                    font-size: 24px;
-                    font-weight: 800;
+                .tax-due-title-summary {
+                    font-weight: bold;
+                    font-size: 16px;
+                    margin-bottom: 5px;
+                }
+                .tax-due-val-summary {
+                    font-weight: bold;
+                    font-size: 22px;
                     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
                 }
             </style>
@@ -949,111 +912,135 @@ function updateTaxSummary(data) {
     var rawVatDue = vatDue ? parseFloat(vatDue.tax_amount) : 0;
     var isPayable = rawVatDue >= 0;
     var absoluteVatDue = Math.abs(rawVatDue);
-    var vatDueClass = isPayable ? "tax-due-payable" : "tax-due-refundable";
-    var vatDueTitle = isPayable ? "الفرق الضريبي المستحق للدفع" : "الفرق الضريبي المستحق للاسترداد (رصيد دائن)";
     
-    var vatDueHtml = `
-        <div class="tax-due-card ${vatDueClass}">
-            <div class="tax-due-title">${vatDueTitle}</div>
-            <div class="tax-due-val">${formatVal(absoluteVatDue)}</div>
+    // Sales Panel
+    var salesHtml = `
+    <div class="tax-panel-card sales-card">
+        <div class="tax-panel-header" style="background-color: #27ae60;">
+            المبيعات
         </div>
+        <div class="tax-panel-body">
+            <div class="tax-row-item">
+                <div class="tax-row-label">المبيعات الخاضعة للضريبة:</div>
+                <div class="tax-row-value">${formatVal(taxableSales?.amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label">ضريبة المبيعات الخاضعة:</div>
+                <div class="tax-row-value" style="color: #27ae60;">${formatVal(taxableSales?.tax_amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label">المبيعات غير الخاضعة للضريبة:</div>
+                <div class="tax-row-value">${formatVal(nonTaxableSales?.amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label">اجمالي المبيعات:</div>
+                <div class="tax-row-value" style="font-weight: bold;">${formatVal(totalSales?.amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label">مرتجع المبيعات الخاضعة:</div>
+                <div class="tax-row-value" style="color: #e74c3c;">${formatVal(salesReturns?.amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label">ضريبة مرتجع المبيعات:</div>
+                <div class="tax-row-value" style="color: #e74c3c;">${formatVal(salesReturns?.tax_amount)}</div>
+            </div>
+            <div class="tax-row-item" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;">
+                <div class="tax-row-label" style="font-size: 14px;">صافي المبيعات:</div>
+                <div class="tax-row-value" style="font-size: 15px; font-weight: bold;">${formatVal(salesNet?.amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label" style="font-size: 14px;">صافي ضريبة المبيعات:</div>
+                <div class="tax-row-value" style="font-size: 15px; font-weight: bold; color: #27ae60;">${formatVal(salesNet?.tax_amount)}</div>
+            </div>
+        </div>
+    </div>
     `;
 
-    // حساب ضريبة المصروفات الكلية
-    var expensesTaxVal = parseFloat(journalEntries?.tax_amount || 0) + parseFloat(paymentEntries?.tax_amount || 0);
+    // Purchases Panel
+    var purchaseHtml = `
+    <div class="tax-panel-card purchases-card">
+        <div class="tax-panel-header" style="background-color: #2980b9;">
+            المشتريات
+        </div>
+        <div class="tax-panel-body">
+            <div class="tax-row-item">
+                <div class="tax-row-label">المشتريات الخاضعة للضريبة:</div>
+                <div class="tax-row-value">${formatVal(taxablePurchases?.amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label">ضريبة المشتريات الخاضعة:</div>
+                <div class="tax-row-value" style="color: #2980b9;">${formatVal(taxablePurchases?.tax_amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label">المشتريات غير الخاضعة للضريبة:</div>
+                <div class="tax-row-value">${formatVal(nonTaxablePurchases?.amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label">اجمالي المشتريات:</div>
+                <div class="tax-row-value" style="font-weight: bold;">${formatVal(totalPurchases?.amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label">مرتجع المشتريات:</div>
+                <div class="tax-row-value" style="color: #e74c3c;">${formatVal(purchaseReturns?.amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label">ضريبة المرتجعات:</div>
+                <div class="tax-row-value" style="color: #e74c3c;">${formatVal(purchaseReturns?.tax_amount)}</div>
+            </div>
+            <div class="tax-row-item" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;">
+                <div class="tax-row-label" style="font-size: 14px;">صافي المشتريات:</div>
+                <div class="tax-row-value" style="font-size: 15px; font-weight: bold;">${formatVal(purchaseNet?.amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label" style="font-size: 14px;">صافي ضريبة المشتريات:</div>
+                <div class="tax-row-value" style="font-size: 15px; font-weight: bold; color: #2980b9;">${formatVal(purchaseNet?.tax_amount)}</div>
+            </div>
+        </div>
+    </div>
+    `;
+
+    // Expenses Panel
+    var expensesHtml = `
+    <div class="tax-panel-card expenses-card" style="grid-column: span 2; background-color: #faf5ff;">
+        <div class="tax-panel-header" style="background-color: #8e44ad;">
+            المصروفات
+        </div>
+        <div class="tax-panel-body">
+            <div class="tax-row-item">
+                <div class="tax-row-label">ضريبة المصروفات (القيود اليومية):</div>
+                <div class="tax-row-value" style="color: #8e44ad;">${formatVal(journalEntries?.tax_amount)}</div>
+            </div>
+            <div class="tax-row-item">
+                <div class="tax-row-label">ضريبة المصروفات (سندات الصرف):</div>
+                <div class="tax-row-value" style="color: #8e44ad;">${formatVal(paymentEntries?.tax_amount)}</div>
+            </div>
+            <div class="tax-row-item" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;">
+                <div class="tax-row-label" style="font-size: 14px;">اجمالي الضريبة المستردة:</div>
+                <div class="tax-row-value" style="font-size: 15px; font-weight: bold; color: #2980b9;">${formatVal(totalRecoverable?.tax_amount)}</div>
+            </div>
+        </div>
+    </div>
+    `;
+
+    // Tax Due Card Summary
+    var vatDueHtmlSummary = `
+    <div class="tax-due-card-summary" style="border: 2px solid ${isPayable ? '#e74c3c' : '#27ae60'}; background-color: ${isPayable ? '#fff5f5' : '#f0fff4'};">
+        <div class="tax-due-title-summary" style="color: ${isPayable ? '#991b1b' : '#065f46'};">${isPayable ? 'الفرق الضريبي المستحق للدفع' : 'الفرق الضريبي المستحق للاسترداد (رصيد دائن)'}:</div>
+        <div class="tax-due-val-summary" style="color: ${isPayable ? '#b91c1c' : '#047857'};">${formatVal(absoluteVatDue)}</div>
+    </div>
+    `;
     
-    var tableDashboardHtml = `
+    var panelDashboardHtml = `
     <div class="tax-dashboard-container">
-        <div class="tax-tables-grid">
-            <!-- جدول المبيعات (المخرجات) -->
-            <div class="tax-table-card sales-card">
-                <div class="tax-card-header green-header">
-                    <h3>المبيعات والضريبة المحصلة (المخرجات)</h3>
-                </div>
-                <table class="tax-summary-table">
-                    <thead>
-                        <tr>
-                            <th>البيان</th>
-                            <th>المبلغ الخاضع</th>
-                            <th>قيمة الضريبة</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>المبيعات الخاضعة للضريبة</td>
-                            <td class="num">${formatVal(taxableSales?.amount)}</td>
-                            <td class="num tax-val-green">${formatVal(taxableSales?.tax_amount)}</td>
-                        </tr>
-                        <tr>
-                            <td>المبيعات غير الخاضعة / الصفرية</td>
-                            <td class="num">${formatVal(nonTaxableSales?.amount)}</td>
-                            <td class="num">-</td>
-                        </tr>
-                        <tr class="returns-row">
-                            <td>مرتجع المبيعات الخاضعة (-)</td>
-                            <td class="num tax-val-red">${formatVal(salesReturns?.amount)}</td>
-                            <td class="num tax-val-red">${formatVal(salesReturns?.tax_amount)}</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td>صافي المبيعات (الخلاصة)</td>
-                            <td class="num">${formatVal(salesNet?.amount)}</td>
-                            <td class="num tax-val-green">${formatVal(salesNet?.tax_amount)}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- جدول المشتريات والمصروفات (المدخلات) -->
-            <div class="tax-table-card purchases-card">
-                <div class="tax-card-header blue-header">
-                    <h3>المشتريات والمصروفات (المدخلات المستردة)</h3>
-                </div>
-                <table class="tax-summary-table">
-                    <thead>
-                        <tr>
-                            <th>البيان</th>
-                            <th>المبلغ الخاضع</th>
-                            <th>قيمة الضريبة</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>المشتريات الخاضعة للضريبة</td>
-                            <td class="num">${formatVal(taxablePurchases?.amount)}</td>
-                            <td class="num tax-val-blue">${formatVal(taxablePurchases?.tax_amount)}</td>
-                        </tr>
-                        <tr>
-                            <td>المشتريات غير الخاضعة / الصفرية</td>
-                            <td class="num">${formatVal(nonTaxablePurchases?.amount)}</td>
-                            <td class="num">-</td>
-                        </tr>
-                        <tr class="returns-row">
-                            <td>مرتجع المشتريات الخاضعة (-)</td>
-                            <td class="num tax-val-red">${formatVal(purchaseReturns?.amount)}</td>
-                            <td class="num tax-val-red">${formatVal(purchaseReturns?.tax_amount)}</td>
-                        </tr>
-                        <tr>
-                            <td>ضريبة المصروفات (سندات + قيود)</td>
-                            <td class="num">-</td>
-                            <td class="num tax-val-purple">${formatVal(expensesTaxVal)}</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td>إجمالي المدخلات المستردة</td>
-                            <td class="num">${formatVal(purchaseNet?.amount)}</td>
-                            <td class="num tax-val-blue">${formatVal(totalRecoverable?.tax_amount)}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="tax-panels-grid">
+            ${salesHtml}
+            ${purchaseHtml}
+            ${expensesHtml}
         </div>
-
-        <!-- كارت التسوية والفرق الضريبي النهائي -->
-        <div class="tax-settlement-section">
-            ${vatDueHtml}
-        </div>
+        ${vatDueHtmlSummary}
     </div>
     `;
     
     // إضافة لوحة التحكم المحسنة إلى الصفحة
-    $taxSummarySection.html(tableDashboardHtml);
+    $taxSummarySection.html(panelDashboardHtml);
 }
