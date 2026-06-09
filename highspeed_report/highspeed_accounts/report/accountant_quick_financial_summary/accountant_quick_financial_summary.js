@@ -38,6 +38,11 @@ frappe.query_reports["Accountant Quick Financial Summary"] = {
             return default_formatter(__(value), row, column, data);
         }
 
+        if (column.fieldname === "ratio") {
+            let formatted = default_formatter(value, row, column, data);
+            return `<span dir="ltr" style="display: inline-block; font-weight: 500; color: #475569;">${formatted}</span>`;
+        }
+
         if (column.fieldname === "value") {
             const val = parseFloat(value) || 0;
             let formatted = default_formatter(value, row, column, data);
@@ -70,12 +75,12 @@ frappe.query_reports["Accountant Quick Financial Summary"] = {
             const is_red = red_metrics.some(m => metric_val === m || metric_val === __(m));
 
             if (is_green) {
-                return `<span style="color: #27ae60; font-weight: bold;">+${formatted}</span>`;
+                return `<span dir="ltr" style="color: #27ae60; font-weight: bold; display: inline-block;">+${formatted}</span>`;
             }
             if (is_red) {
-                return `<span style="color: #e74c3c; font-weight: bold;">-${formatted}</span>`;
+                return `<span dir="ltr" style="color: #e74c3c; font-weight: bold; display: inline-block;">-${formatted}</span>`;
             }
-            return `<span style="font-weight: bold; color: #2c3e50;">${formatted}</span>`;
+            return `<span dir="ltr" style="font-weight: bold; color: #2c3e50; display: inline-block;">${formatted}</span>`;
         }
 
         return default_formatter(value, row, column, data);
@@ -262,15 +267,6 @@ function updateFinancialDashboard(data, $container) {
                 .text-red { color: #dc2626 !important; }
                 .text-orange { color: #ea580c !important; }
                 .text-bold { font-weight: bold; }
-                
-                /* Force report table container to be full width */
-                .report-container, .report-wrapper, .dt-container, .dt-scrollable {
-                    width: 100% !important;
-                    max-width: 100% !important;
-                }
-                .slick-viewport, .slick-grid {
-                    width: 100% !important;
-                }
             </style>
         `);
     }
