@@ -180,3 +180,39 @@ Difference %,نسبة الفرق
 Show Payment Details,إظهار تفاصيل الدفع
 Open,مفتوح
 Closed,مغلق
+Product Profitability,أرباح المنتجات
+Daily Payment Reconciliation,مطابقة المدفوعات اليومية
+Low Stock Reorder Alert,تنبيهات انخفاض المخزون
+Simplified Cash Bank Ledger,دفتر الصندوق والبنك المبسط
+Executive Daily Sales Summary,ملخص المبيعات اليومي للإدارة
+Sold Quantity,الكمية المباعة
+Sales Amount,مبلغ المبيعات
+Cost Amount,مبلغ التكلفة
+Total Cost,إجمالي التكلفة
+Average Margin %,متوسط نسبة هامش الربح
+Cashier / User,الكاشير / المستخدم
+Received Amount,المبلغ المستلم
+POS Session Closed,جلسة نقطة البيع مغلقة
+Custom Shift Closed,الوردية المخصصة مغلقة
+Direct Invoice Payment,دفع فاتورة مباشر
+Actual Qty,الكمية الحالية
+Reorder Level,حد الطلب
+Reorder Qty,كمية إعادة الطلب
+Shortage Qty,كمية النقص
+Out of Stock Items,أصناف منتهية المخزون
+Low Stock Items,أصناف منخفضة المخزون
+Total Shortage Qty,إجمالي كمية النقص
+Debit (In),مدين (وارد)
+Credit (Out),دائن (صادر)
+Total Inflow (Debit),إجمالي الوارد (مدين)
+Total Outflow (Credit),إجمالي الصادر (دائن)
+Today's Value,قيمة اليوم
+Yesterday's Value,قيمة الأمس
+Change,التغير
+Change %,نسبة التغير
+Executive Summary,الملخص التنفيذي
+Top 5 Selling Items (Today),أفضل 5 أصناف مبيعاً (اليوم)
+Qty Sold,الكمية المباعة
+Net Sales (Today),صافي المبيعات (اليوم)
+Total Invoices (Today),إجمالي الفواتير (اليوم)
+Average Basket (Today),متوسط السلة (اليوم)
