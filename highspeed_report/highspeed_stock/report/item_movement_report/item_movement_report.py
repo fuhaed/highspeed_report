@@ -369,7 +369,7 @@ def get_voucher_details(stock_ledger_entries):
     # جلب تفاصيل أذون التسليم
     if delivery_notes:
         for d in frappe.db.sql("""
-            SELECT name, customer, customer_name, project, remarks, is_return
+            SELECT name, customer, customer_name, project, instructions as remarks, is_return
             FROM `tabDelivery Note`
             WHERE name IN %s
         """, [delivery_notes], as_dict=1):
