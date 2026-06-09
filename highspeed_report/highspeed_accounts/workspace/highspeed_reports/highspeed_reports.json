@@ -1,7 +1,7 @@
 {
  "charts": [],
  "content": "[{\"id\":\"hs_header_reports\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h3\\\"><b>Highspeed Custom Reports</b></span>\",\"col\":12}},{\"id\":\"hs_card_finance\",\"type\":\"card\",\"data\":{\"card_name\":\"Financial and Tax Reports\",\"col\":6}},{\"id\":\"hs_card_sales\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales and POS Reports\",\"col\":6}},{\"id\":\"hs_card_statements\",\"type\":\"card\",\"data\":{\"card_name\":\"Statements and Payments\",\"col\":6}},{\"id\":\"hs_card_stock\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock and Inventory Reports\",\"col\":6}}]",
- "creation": "2026-06-08 18:40:00.000000",
+ "creation": "2026-06-08 18:40:00",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -18,6 +18,7 @@
    "is_query_report": 0,
    "label": "Financial and Tax Reports",
    "link_count": 0,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -86,6 +87,7 @@
    "is_query_report": 0,
    "label": "Sales and POS Reports",
    "link_count": 0,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -134,7 +136,7 @@
    "link_to": "POS Sales Report",
    "link_type": "Report",
    "onboard": 1,
-   "report_ref_doctype": "Sales Invoice",
+   "report_ref_doctype": "POS Invoice",
    "type": "Link"
   },
   {
@@ -146,7 +148,7 @@
    "link_to": "POS Opening Closing Report",
    "link_type": "Report",
    "onboard": 1,
-   "report_ref_doctype": "POS Opening Shift",
+   "report_ref_doctype": "POS Opening Entry",
    "type": "Link"
   },
   {
@@ -166,6 +168,7 @@
    "is_query_report": 0,
    "label": "Statements and Payments",
    "link_count": 0,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -178,7 +181,7 @@
    "link_to": "Customer Statement Report",
    "link_type": "Report",
    "onboard": 1,
-   "report_ref_doctype": "Customer",
+   "report_ref_doctype": "Sales Invoice",
    "type": "Link"
   },
   {
@@ -190,7 +193,7 @@
    "link_to": "Supplier Statement Report",
    "link_type": "Report",
    "onboard": 1,
-   "report_ref_doctype": "Supplier",
+   "report_ref_doctype": "Purchase Invoice",
    "type": "Link"
   },
   {
@@ -234,6 +237,7 @@
    "is_query_report": 0,
    "label": "Stock and Inventory Reports",
    "link_count": 0,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -246,7 +250,7 @@
    "link_to": "Item Warehouse Quantity Report",
    "link_type": "Report",
    "onboard": 1,
-   "report_ref_doctype": "Item",
+   "report_ref_doctype": "Bin",
    "type": "Link"
   },
   {
@@ -258,7 +262,7 @@
    "link_to": "Item Stock Balance",
    "link_type": "Report",
    "onboard": 1,
-   "report_ref_doctype": "Item",
+   "report_ref_doctype": "Stock Ledger Entry",
    "type": "Link"
   },
   {
@@ -294,7 +298,7 @@
    "link_to": "Item Price Comparison Report",
    "link_type": "Report",
    "onboard": 1,
-   "report_ref_doctype": "Item",
+   "report_ref_doctype": "Item Price",
    "type": "Link"
   },
   {
@@ -334,7 +338,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-06-08 18:40:00.000000",
+ "modified": "2026-06-09 07:18:28.507862",
  "modified_by": "Administrator",
  "module": "Highspeed Accounts",
  "name": "Highspeed Reports",
