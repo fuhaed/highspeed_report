@@ -188,6 +188,12 @@ function updateFinancialDashboard(data, $container) {
                     gap: 20px;
                     margin-bottom: 20px;
                 }
+                .financial-charts-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 20px;
+                }
                 .financial-panel {
                     background: #ffffff;
                     border: 1px solid #e2e8f0;
@@ -341,6 +347,21 @@ function updateFinancialDashboard(data, $container) {
                 </div>
             </div>
 
+            <div class="financial-charts-grid">
+                <div class="financial-panel">
+                    <div class="panel-header">${__("Cash vs Bank Distribution")}</div>
+                    <div class="panel-body" style="display: flex; justify-content: center; align-items: center; min-height: 220px;">
+                        <div id="chart-cash-bank" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="financial-panel">
+                    <div class="panel-header">${__("Sales vs Purchases")}</div>
+                    <div class="panel-body" style="display: flex; justify-content: center; align-items: center; min-height: 220px;">
+                        <div id="chart-sales-purchases" style="width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="financial-panels-grid">
                 <div class="financial-panel">
                     <div class="panel-header">${__("Cash & Bank Accounts")}</div>
@@ -413,6 +434,49 @@ function updateFinancialDashboard(data, $container) {
     `;
 
     $container.html(html);
+
+    // Render charts
+    setTimeout(() => {
+        // 1. Cash vs Bank Distribution (Donut Chart)
+        const cash_abs = Math.abs(cash_in_hand);
+        const bank_abs = Math.abs(bank_balances);
+        if (cash_abs > 0 || bank_abs > 0) {
+            new frappe.Chart("#chart-cash-bank", {
+                data: {
+                    labels: [__("Cash"), __("Bank")],
+                    datasets: [
+                        {
+                            values: [cash_abs, bank_abs]
+                        }
+                    ]
+                },
+                type: 'donut',
+                height: 180,
+                colors: ['#34d399', '#60a5fa'] // light green, light blue
+            });
+        } else {
+            $("#chart-cash-bank").html(`<div style="text-align: center; color: #64748b; padding-top: 70px;">${__("No data available")}</div>`);
+        }
+
+        // 2. Sales vs Purchases Comparison (Bar Chart)
+        if (net_sales > 0 || net_purchases > 0) {
+            new frappe.Chart("#chart-sales-purchases", {
+                data: {
+                    labels: [__("Sales"), __("Purchases")],
+                    datasets: [
+                        {
+                            values: [net_sales, net_purchases]
+                        }
+                    ]
+                },
+                type: 'bar',
+                height: 180,
+                colors: ['#10b981', '#ef4444'] // green, red
+            });
+        } else {
+            $("#chart-sales-purchases").html(`<div style="text-align: center; color: #64748b; padding-top: 70px;">${__("No data available")}</div>`);
+        }
+    }, 100);
 }
 
 function get_accountant_print_html(data, filters) {
